@@ -1,4 +1,5 @@
-import 'package:delivery_flutter_app/user/screen/login_screen.dart';
+import 'package:delivery_flutter_app/common/const/colors.dart';
+import 'package:delivery_flutter_app/common/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -8,16 +9,16 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: PRIMARY_COLOR),
+        useMaterial3: false,
         fontFamily: 'NotoSans',
       ),
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
