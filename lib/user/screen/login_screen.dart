@@ -18,6 +18,7 @@ class LoginScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                 hintText: '비밀번호를 입력해주세요.',
+                obscureText: true,
               ),
             ],
           ),
