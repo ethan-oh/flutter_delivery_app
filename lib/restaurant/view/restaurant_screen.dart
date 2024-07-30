@@ -1,6 +1,9 @@
 import 'package:delivery_flutter_app/common/const/data.dart';
+import 'package:delivery_flutter_app/common/dio/dio.dart';
+import 'package:delivery_flutter_app/common/model/cursor_pagination_model.dart';
 import 'package:delivery_flutter_app/restaurant/component/restaurant_card.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
+import 'package:delivery_flutter_app/restaurant/repository/restaurant_repository.dart';
 import 'package:delivery_flutter_app/restaurant/view/restaurant_detail_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -10,27 +13,27 @@ class RestaurantScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List> paginateRestaurant() async {
+    Future<List<RestaurantModel>> paginateRestaurant() async {
       Dio dio = Dio();
+      dio.interceptors.add(CustomInterceptor(storage, dio));
 
-      final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
+      final repository =
+          RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
 
-      final resp = await dio.get(
-        'http://$ip/restaurant',
-        options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
-      );
-
-      return resp.data['data'];
+      final resp = await repository.paginate();
+      return resp.data;
     }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: SizedBox(
         child: Center(
-          child: FutureBuilder<List>(
+          child: FutureBuilder<List<RestaurantModel>>(
             future: paginateRestaurant(),
             builder: (context, snapshot) {
-              // print(snapshot.data?.first);
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error.toString()));
+              }
               if (!snapshot.hasData) {
                 return Center(child: CircularProgressIndicator());
               }
@@ -40,23 +43,19 @@ class RestaurantScreen extends StatelessWidget {
                   height: 16,
                 ),
                 itemBuilder: (context, index) {
-                  final RestaurantModel restaurantModel =
-                      RestaurantModel.fromJson(
-                    json: snapshot.data![index],
-                  );
                   return InkWell(
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => RestaurantDetailScreen(
-                            id: restaurantModel.id,
-                            name: restaurantModel.name,
+                            id: snapshot.data![index].id,
+                            name: snapshot.data![index].name,
                           ),
                         ),
                       );
                     },
                     child: RestaurantCard.fromModel(
-                      model: restaurantModel,
+                      model: snapshot.data![index],
                     ),
                   );
                 },

@@ -1,8 +1,10 @@
 import 'package:delivery_flutter_app/common/const/data.dart';
+import 'package:delivery_flutter_app/common/dio/dio.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:delivery_flutter_app/product/component/product_card.dart';
 import 'package:delivery_flutter_app/restaurant/component/restaurant_card.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_detail_model.dart';
+import 'package:delivery_flutter_app/restaurant/repository/restaurant_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -16,40 +18,39 @@ class RestaurantDetailScreen extends StatelessWidget {
     required this.name,
   });
 
-  Future<Map<String, dynamic>> getRestaurantDetail() async {
+  Future<RestaurantDetailModel> getRestaurantDetail() async {
     final dio = Dio();
 
-    final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
-
-    final resp = await dio.get(
-      'http://$ip/restaurant/$id',
-      options: Options(
-        headers: {'authorization': 'Bearer $accessToken'},
-      ),
+    dio.interceptors.add(
+      CustomInterceptor(storage, dio),
     );
 
-    return resp.data;
+    final repository =
+        RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
+
+    return repository.getRestaurantDetail(id: id);
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: name,
-      child: FutureBuilder<Map<String, dynamic>>(
+      child: FutureBuilder<RestaurantDetailModel>(
         future: getRestaurantDetail(),
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
           if (!snapshot.hasData) {
             return Center(child: const CircularProgressIndicator());
           }
-
-          final item = RestaurantDetailModel.fromJson(
-            snapshot.data!,
-          );
           return CustomScrollView(
             slivers: [
-              _buildTop(model: item),
+              _buildTop(model: snapshot.data!),
               _buildLabel(),
-              _buildProducts(products: item.products),
+              _buildProducts(products: snapshot.data!.products),
             ],
           );
         },
