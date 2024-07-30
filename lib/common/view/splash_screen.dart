@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/common/const/data.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
@@ -20,38 +18,46 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // deleteToken();
-    checkToken();
+    checkToken(context);
   }
 
   void deleteToken() async {
     await storage.deleteAll();
   }
 
-  void checkToken() async {
+  void checkToken(context) async {
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
-    final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
 
     final dio = Dio();
 
     try {
       final resp = await dio.post(
         'http://$ip/auth/token',
-        options: Options(headers: {'authorization': 'Bearer $refreshToken'}),
+        options: Options(
+          headers: {'authorization': 'Bearer $refreshToken'},
+        ),
       );
 
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => RootTab(),
-        ),
-        (route) => false,
-      );
+      await storage.write(
+          key: ACCESS_TOKEN_KEY, value: resp.data['accessToken']);
+
+      if (context.mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => RootTab(),
+          ),
+          (route) => false,
+        );
+      }
     } catch (e) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-        (route) => false,
-      );
+      if (context.mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ),
+          (route) => false,
+        );
+      }
     }
   }
 

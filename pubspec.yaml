@@ -37,10 +37,16 @@ dependencies:
   cupertino_icons: ^1.0.6
   dio: ^5.5.0+1
   flutter_secure_storage: ^9.2.2
+  json_annotation: ^4.9.0
+  retrofit: '>=4.0.0 <5.0.0'
+  logger: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  retrofit_generator: '>=7.0.0 <8.0.0'
+  build_runner: ^2.3.3
+  json_serializable: ^6.8.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

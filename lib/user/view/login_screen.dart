@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:delivery_flutter_app/common/component/custom_text_form_field.dart';
 import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/common/const/data.dart';
@@ -25,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return DefaultLayout(
       child: SingleChildScrollView(
-        // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: SafeArea(
           top: true,
           bottom: false,
@@ -78,11 +77,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       await storage.write(
                           key: ACCESS_TOKEN_KEY, value: accessToken);
 
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const RootTab(),
-                        ),
-                      );
+                      if (context.mounted) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const RootTab(),
+                          ),
+                        );
+                      }
                     } catch (e) {
                       // print(e);
                     }

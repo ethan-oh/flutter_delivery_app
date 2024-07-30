@@ -75,11 +75,11 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       child: TabBarView(
         controller: controller,
         physics: NeverScrollableScrollPhysics(),
-        children: [
-          const RestaurantScreen(),
-          Center(child: Container(child: Text('음식'))),
-          Center(child: Container(child: Text('주문'))),
-          Center(child: Container(child: Text('프로필'))),
+        children: const [
+          RestaurantScreen(),
+          Center(child: Text('음식')),
+          Center(child: Text('주문')),
+          Center(child: Text('프로필')),
         ],
       ),
     );
