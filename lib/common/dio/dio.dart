@@ -1,13 +1,25 @@
 import 'package:delivery_flutter_app/common/const/data.dart';
+import 'package:delivery_flutter_app/common/storage/secure_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final dioProvider = Provider(
+  (ref) {
+    final dio = Dio();
+    final storage = ref.watch(secureStorageProvider);
+    dio.interceptors.add(CustomInterceptor(storage));
+    return dio;
+  },
+);
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
-  final Dio dio;
 
-  CustomInterceptor(this.storage, this.dio);
+  CustomInterceptor(
+    this.storage,
+  );
   // 요청 보내기 전
   @override
   void onRequest(
@@ -60,6 +72,7 @@ class CustomInterceptor extends Interceptor {
 
     if (isStatus401 && !isPathRefresh) {
       try {
+        final dio = Dio()..interceptors.add(CustomInterceptor(storage));
         final resp = await dio.post(
           'http://$ip/auth/token',
           options: Options(

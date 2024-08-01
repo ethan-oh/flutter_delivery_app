@@ -2,26 +2,27 @@ import 'dart:convert';
 import 'package:delivery_flutter_app/common/component/custom_text_form_field.dart';
 import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/common/const/data.dart';
+import 'package:delivery_flutter_app/common/dio/dio.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
+import 'package:delivery_flutter_app/common/storage/secure_storage.dart';
 import 'package:delivery_flutter_app/common/view/root_tab.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   String userEmail = '';
   String password = '';
 
   @override
   Widget build(BuildContext context) {
-    final Dio dio = Dio();
-
     return DefaultLayout(
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -57,6 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () async {
+                    final dio = ref.read(dioProvider);
                     final rawString = '$userEmail:$password';
                     Codec<String, String> stringToBase64 = utf8.fuse(base64);
                     final token = stringToBase64.encode(rawString);
@@ -71,6 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       final refreshToken = resp.data['refreshToken'];
                       final accessToken = resp.data['accessToken'];
+
+                      final storage = ref.read(secureStorageProvider);
 
                       await storage.write(
                           key: REFRESH_TOKEN_KEY, value: refreshToken);

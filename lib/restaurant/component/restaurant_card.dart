@@ -30,9 +30,12 @@ class RestaurantCard extends StatelessWidget {
   factory RestaurantCard.fromModel(
       {required RestaurantModel model, bool isDetail = false, String? detail}) {
     return RestaurantCard(
-      image: Image.network(
-        model.thumbUrl,
-        fit: BoxFit.cover,
+      image: Hero(
+        tag: ObjectKey(model.id),
+        child: Image.network(
+          model.thumbUrl,
+          fit: BoxFit.cover,
+        ),
       ),
       name: model.name,
       tags: model.tags,
