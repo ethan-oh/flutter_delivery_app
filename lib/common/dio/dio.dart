@@ -1,5 +1,6 @@
 import 'package:delivery_flutter_app/common/const/data.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CustomInterceptor extends Interceptor {
@@ -11,7 +12,7 @@ class CustomInterceptor extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    print('[REQ] [${options.method}] ${options.uri}');
+    debugPrint('[REQ] [${options.method}] ${options.uri}');
 
     // header에 {'accessToken' : true}가 있다면
     // 즉, 토큰이 필요한 요청이라면
@@ -39,7 +40,7 @@ class CustomInterceptor extends Interceptor {
   // 응답 시
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print(
+    debugPrint(
         '[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
     super.onResponse(response, handler);
   }
@@ -47,7 +48,7 @@ class CustomInterceptor extends Interceptor {
   // 에러 발생 시
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    print(
+    debugPrint(
         '[ERR] ${err.response?.statusCode} [${err.requestOptions.method}] ${err.requestOptions.uri}');
 
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);

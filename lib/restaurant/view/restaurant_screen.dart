@@ -1,6 +1,5 @@
 import 'package:delivery_flutter_app/common/const/data.dart';
 import 'package:delivery_flutter_app/common/dio/dio.dart';
-import 'package:delivery_flutter_app/common/model/cursor_pagination_model.dart';
 import 'package:delivery_flutter_app/restaurant/component/restaurant_card.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
 import 'package:delivery_flutter_app/restaurant/repository/restaurant_repository.dart';

@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       }
                     } catch (e) {
-                      // print(e);
+                      print(e);
                     }
                   },
                   child: const Text('로그인'),
