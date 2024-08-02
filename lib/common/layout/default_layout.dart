@@ -21,6 +21,7 @@ class DefaultLayout extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
       appBar: buildAppBar(),
+      extendBodyBehindAppBar: title == null,
       body: child,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
@@ -29,7 +30,10 @@ class DefaultLayout extends StatelessWidget {
 
   AppBar? buildAppBar() {
     if (title == null) {
-      return null;
+      return AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      );
     } else {
       return AppBar(
         backgroundColor: Colors.white,

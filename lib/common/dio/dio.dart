@@ -24,7 +24,7 @@ class CustomInterceptor extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    debugPrint('[REQ] [${options.method}] ${options.uri}');
+    debugPrint('[요청] [${options.method}] ${options.uri}');
 
     // header에 {'accessToken' : true}가 있다면
     // 즉, 토큰이 필요한 요청이라면
@@ -53,7 +53,7 @@ class CustomInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     debugPrint(
-        '[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
+        '[응답] [${response.requestOptions.method}] ${response.requestOptions.uri}');
     super.onResponse(response, handler);
   }
 
@@ -61,7 +61,7 @@ class CustomInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     debugPrint(
-        '[ERR] ${err.response?.statusCode} [${err.requestOptions.method}] ${err.requestOptions.uri}');
+        '[에러] ${err.response?.statusCode} [${err.requestOptions.method}] ${err.requestOptions.uri}');
 
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
 

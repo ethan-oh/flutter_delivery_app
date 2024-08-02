@@ -59,31 +59,31 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
 
     data as CursorPagination;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: SizedBox(
-        child: Center(
-          child: ListView.separated(
-            controller: controller,
-            itemCount: data.data.length + 1,
-            separatorBuilder: (context, index) => const SizedBox(
-              height: 16,
-            ),
-            itemBuilder: (context, index) {
-              if (index == data.data.length) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Center(
-                    child: data is CursorPaginationFetchingMore
-                        ? CircularProgressIndicator()
-                        : Text(
-                            '마지막 식당입니다',
-                            style: TextStyle(),
-                          ),
-                  ),
-                );
-              }
-              return InkWell(
+    return SizedBox(
+      child: Center(
+        child: ListView.separated(
+          controller: controller,
+          itemCount: data.data.length + 1,
+          separatorBuilder: (context, index) => const Divider(
+            height: 30,
+          ),
+          itemBuilder: (context, index) {
+            if (index == data.data.length) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Center(
+                  child: data is CursorPaginationFetchingMore
+                      ? CircularProgressIndicator()
+                      : Text(
+                          '마지막 식당입니다',
+                          style: TextStyle(),
+                        ),
+                ),
+              );
+            }
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: InkWell(
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -97,9 +97,9 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                 child: RestaurantCard.fromModel(
                   model: data.data[index],
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
