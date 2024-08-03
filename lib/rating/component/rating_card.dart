@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
+import 'dart:math' as math;
 
 class RatingCard extends StatelessWidget {
   final ImageProvider avartarImage;
@@ -51,10 +52,11 @@ class RatingCard extends StatelessWidget {
   }
 }
 
-class _Header extends StatelessWidget {
+class _Header extends StatefulWidget {
   final ImageProvider avartarImage;
   final int rating;
   final String email;
+
   const _Header({
     required this.avartarImage,
     required this.rating,
@@ -62,17 +64,41 @@ class _Header extends StatelessWidget {
   });
 
   @override
+  _HeaderState createState() => _HeaderState();
+}
+
+class _HeaderState extends State<_Header> {
+  late Color randomColor;
+
+  @override
+  void initState() {
+    super.initState();
+    randomColor = _getRandomColor();
+  }
+
+  Color _getRandomColor() {
+    return Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+        .withOpacity(0.5);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CircleAvatar(
-          radius: 12,
-          backgroundImage: avartarImage,
+        ColorFiltered(
+          colorFilter: ColorFilter.mode(
+            randomColor,
+            BlendMode.srcATop,
+          ),
+          child: CircleAvatar(
+            radius: 12,
+            backgroundImage: widget.avartarImage,
+          ),
         ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
-            email,
+            widget.email,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 14,
@@ -85,7 +111,7 @@ class _Header extends StatelessWidget {
           5,
           (index) {
             return Icon(
-              index < rating ? Icons.star : Icons.star_border_outlined,
+              index < widget.rating ? Icons.star : Icons.star_border_outlined,
               color: PRIMARY_COLOR,
             );
           },

@@ -2,6 +2,7 @@ import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_detail_model.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
 import 'package:flutter/material.dart';
+import 'package:readmore/readmore.dart';
 
 class RestaurantCard extends StatelessWidget {
   final Widget image; // 이미지
@@ -54,7 +55,7 @@ class RestaurantCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         isDetail
-            ? image
+            ? SizedBox.shrink()
             : ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: image,
@@ -69,7 +70,8 @@ class RestaurantCard extends StatelessWidget {
             children: [
               Text(
                 name,
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                    fontSize: isDetail ? 24 : 20, fontWeight: FontWeight.w500),
               ),
               const SizedBox(
                 height: 8.0,
@@ -107,7 +109,15 @@ class RestaurantCard extends StatelessWidget {
               if (detail != null && isDetail)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text(detail!),
+                  child: ReadMoreText(
+                    detail!,
+                    trimMode: TrimMode.Line,
+                    trimLines: 10,
+                    colorClickableText: Colors.grey,
+                    trimCollapsedText: '더보기',
+                    trimExpandedText: ' 간략히',
+                    textAlign: TextAlign.start,
+                  ),
                 ),
             ],
           ),

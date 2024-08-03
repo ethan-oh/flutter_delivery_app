@@ -30,7 +30,7 @@ class CursorPagination<T> extends CursorPaginationBase {
           Map<String, dynamic> json, T Function(Object? json) fromJSonT) =>
       _$CursorPaginationFromJson(json, fromJSonT);
 
-  CursorPagination copyWith({
+  CursorPagination<T> copyWith({
     CursorPaginationMeta? meta,
     List<T>? data,
   }) {

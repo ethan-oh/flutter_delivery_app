@@ -1,5 +1,6 @@
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:delivery_flutter_app/common/model/cursor_pagination_model.dart';
+import 'package:delivery_flutter_app/common/utils/pagination_utils.dart';
 import 'package:delivery_flutter_app/product/component/product_card.dart';
 import 'package:delivery_flutter_app/rating/component/rating_card.dart';
 import 'package:delivery_flutter_app/rating/model/rating_model.dart';
@@ -29,10 +30,32 @@ class RestaurantDetailScreen extends ConsumerStatefulWidget {
 
 class _RestaurantDetailScreenState
     extends ConsumerState<RestaurantDetailScreen> {
+  final ScrollController controller = ScrollController();
+  bool isExpanded = true;
   @override
   void initState() {
     super.initState();
     ref.read(restaurantProvider.notifier).getDetail(id: widget.id);
+    controller.addListener(listener);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(listener);
+    super.dispose();
+  }
+
+  listener() {
+    PaginationUtils.paginate(
+      controller: controller,
+      provider: ref.read(
+        restaurantRatingProvider(widget.id).notifier,
+      ),
+    );
+    const double expandAppBarHeight = 130;
+    setState(() {
+      isExpanded = controller.offset < expandAppBarHeight ? true : false;
+    });
   }
 
   @override
@@ -47,36 +70,95 @@ class _RestaurantDetailScreenState
       );
     }
 
-    return DefaultLayout(
-      child: CustomScrollView(
+    return Scaffold(
+      body: CustomScrollView(
+        controller: controller,
         slivers: [
+          _buildSliverAppbar(state),
           _buildTop(
             model: state,
           ),
           if (state is! RestaurantDetailModel) _buildLoading(),
           if (state is RestaurantDetailModel) _buildLabel(text: '메뉴'),
           if (state is RestaurantDetailModel)
-            _buildProducts(
-              products: state.products,
-            ),
+            _buildProducts(products: state.products),
           if (state is RestaurantDetailModel)
             _buildLabel(text: '리뷰 ${state.ratingsCount}개'),
           if (ratingsState is CursorPagination<RatingModel>)
-            _buildRatings(ratings: ratingsState.data),
+            _buildRatings(ratingsState: ratingsState),
         ],
       ),
     );
   }
 
-  SliverPadding _buildRatings({required List<RatingModel> ratings}) {
+////////////////////
+
+  SliverAppBar _buildSliverAppbar(RestaurantModel state) {
+    return SliverAppBar(
+      forceElevated: true,
+      pinned: true,
+      stretch: true,
+      floating: false,
+      title: Text(
+        widget.name,
+        style: TextStyle(
+          color: isExpanded ? Colors.white : Colors.black,
+        ),
+      ),
+      elevation: 0,
+      expandedHeight: 200,
+      collapsedHeight: kToolbarHeight,
+      backgroundColor: isExpanded ? Colors.transparent : Colors.white,
+      foregroundColor: isExpanded ? Colors.white : Colors.black,
+      flexibleSpace: FlexibleSpaceBar(
+        stretchModes: const [StretchMode.zoomBackground],
+        background: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.network(
+              state.thumbUrl,
+              fit: BoxFit.cover,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.9),
+                    Colors.transparent,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SliverPadding _buildRatings({required CursorPaginationBase ratingsState}) {
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            return RatingCard.fromModel(model: ratings[index]);
+            if (index == ratingsState.data.length) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Center(
+                  child: ratingsState is CursorPaginationFetchingMore
+                      ? CircularProgressIndicator()
+                      : Text(
+                          '마지막 식당입니다',
+                          style: TextStyle(),
+                        ),
+                ),
+              );
+            }
+            return RatingCard.fromModel(model: ratingsState.data[index]);
           },
-          childCount: ratings.length,
+          childCount: (ratingsState as CursorPagination).data.length + 1,
         ),
       ),
     );
@@ -90,40 +172,33 @@ class _RestaurantDetailScreenState
           [
             Padding(
               padding: const EdgeInsets.only(top: 16),
-              child: Skeletonizer.zone(child: Bone.text(words: 4)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Skeletonizer.zone(child: Bone.text(words: 1)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Skeletonizer.zone(child: Bone.text(words: 3)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Skeletonizer.zone(child: Bone.text(words: 5)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Skeletonizer.zone(child: Bone.text(words: 1)),
+              child: Skeletonizer.zone(
+                  child: Bone.multiText(
+                lines: 4,
+              )),
             ),
             ...List.generate(
-              3,
+              4,
               (index) => Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Skeletonizer.zone(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: ListTile(
                       leading: Bone.square(
                         size: 56,
                       ),
-                      title: Bone.text(
-                        words: 1,
+                      title: Bone.multiText(
+                        lines: 3,
                       ),
-                      subtitle: Bone.text(
-                        words: 3,
+                      subtitle: const Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Bone.button(
+                            width: 50,
+                            height: 20,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -138,11 +213,11 @@ class _RestaurantDetailScreenState
 
   SliverPadding _buildLabel({required String text}) {
     return SliverPadding(
-      padding: EdgeInsets.only(left: 16, bottom: 8),
+      padding: EdgeInsets.only(top: 30, left: 16, bottom: 16),
       sliver: SliverToBoxAdapter(
         child: Text(
           text,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
       ),
     );

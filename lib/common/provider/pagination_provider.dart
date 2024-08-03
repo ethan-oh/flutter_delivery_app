@@ -15,7 +15,7 @@ class PaginationProvider<T extends IModelWithId,
   }
 
   Future<void> paginate({
-    int fetchCount = 10,
+    int fetchCount = 20,
     // 데이터 추가 요청
     bool fetchMore = false,
     // 강제로 로딩할지 (true: CursorPaginationLoading())
