@@ -20,7 +20,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // deleteToken();
+    deleteToken();
     checkToken(context);
   }
 
@@ -41,7 +41,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           headers: {'authorization': 'Bearer $refreshToken'},
         ),
       );
-
       await storage.write(
           key: ACCESS_TOKEN_KEY, value: resp.data['accessToken']);
 
@@ -53,8 +52,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           (route) => false,
         );
       }
-    } catch (e) {
-      if (context.mounted) {
+    } on DioException catch (e) {
+      print(e);
+      if (context.mounted && e.response!.statusCode == 401) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => LoginScreen(),

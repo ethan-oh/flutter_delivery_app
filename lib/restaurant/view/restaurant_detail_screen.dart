@@ -14,13 +14,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class RestaurantDetailScreen extends ConsumerStatefulWidget {
-  final String name;
   final String id;
 
   const RestaurantDetailScreen({
     super.key,
     required this.id,
-    required this.name,
   });
 
   @override
@@ -52,7 +50,7 @@ class _RestaurantDetailScreenState
         restaurantRatingProvider(widget.id).notifier,
       ),
     );
-    const double expandAppBarHeight = 130;
+    const double expandAppBarHeight = 120;
     setState(() {
       isExpanded = controller.offset < expandAppBarHeight ? true : false;
     });
@@ -62,6 +60,11 @@ class _RestaurantDetailScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
     final ratingsState = ref.watch(restaurantRatingProvider(widget.id));
+
+    // product탭에서 restaurantProvider에 존재하지 않는 값의 detail을 요청했을 때
+    // state.data에 매칭되는 id가 없으므로 state = null을 반환한다.
+    // 따라서 restaurantProvider에 존재하는 경우는 로딩 중에 skeleton 등을 그리지만
+    // 이 경우에는 CircularProgressIndicator를 그린다.
     if (state == null) {
       return DefaultLayout(
         child: Center(
@@ -100,9 +103,9 @@ class _RestaurantDetailScreenState
       stretch: true,
       floating: false,
       title: Text(
-        widget.name,
+        state.name,
         style: TextStyle(
-          color: isExpanded ? Colors.white : Colors.black,
+          color: isExpanded ? Colors.transparent : Colors.black,
         ),
       ),
       elevation: 0,
@@ -119,15 +122,20 @@ class _RestaurantDetailScreenState
               state.thumbUrl,
               fit: BoxFit.cover,
             ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withOpacity(0.9),
-                    Colors.transparent,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+            Positioned(
+              left: 0,
+              right: 0,
+              height: 120,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.black.withOpacity(0.7),
+                      Colors.transparent,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
               ),
             ),
@@ -139,7 +147,7 @@ class _RestaurantDetailScreenState
 
   SliverPadding _buildRatings({required CursorPaginationBase ratingsState}) {
     return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -150,8 +158,9 @@ class _RestaurantDetailScreenState
                   child: ratingsState is CursorPaginationFetchingMore
                       ? CircularProgressIndicator()
                       : Text(
-                          '마지막 식당입니다',
-                          style: TextStyle(),
+                          '마지막 댓글입니다',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 16),
                         ),
                 ),
               );
