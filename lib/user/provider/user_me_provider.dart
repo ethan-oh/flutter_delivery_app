@@ -62,7 +62,7 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
       // watch로 관찰할 수 있게 상태 저장
       state = userResp;
       return userResp;
-    } on DioException catch (e) {
+    } on DioException catch (_) {
       state = UserModelError(message: '로그인에 실패했습니다.');
       return Future.value(state);
     }

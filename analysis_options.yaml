@@ -11,7 +11,9 @@ analyzer:
   errors:
     avoid_print: ignore
     prefer_const_constructors: ignore
-include: package:flutter_lints/flutter.yaml
+
+  exclude:
+    - lib/**/*.g.dart
 
 linter:
   # The lint rules applied to this project can be customized in the

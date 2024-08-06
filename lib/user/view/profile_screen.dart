@@ -1,4 +1,3 @@
-import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/user/model/user_model.dart';
 import 'package:delivery_flutter_app/user/provider/user_me_provider.dart';
 import 'package:flutter/material.dart';

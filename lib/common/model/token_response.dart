@@ -4,7 +4,7 @@ part 'token_response.g.dart';
 
 @JsonSerializable()
 class TokenResponse {
-  final accessToken;
+  final String accessToken;
   TokenResponse({required this.accessToken});
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) =>
