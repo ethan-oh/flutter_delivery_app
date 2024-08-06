@@ -3,6 +3,7 @@ import 'package:delivery_flutter_app/common/storage/secure_storage.dart';
 import 'package:delivery_flutter_app/user/model/user_model.dart';
 import 'package:delivery_flutter_app/user/repository/auth_repository.dart';
 import 'package:delivery_flutter_app/user/repository/user_me_repository.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -61,7 +62,7 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
       // watch로 관찰할 수 있게 상태 저장
       state = userResp;
       return userResp;
-    } catch (e) {
+    } on DioException catch (e) {
       state = UserModelError(message: '로그인에 실패했습니다.');
       return Future.value(state);
     }

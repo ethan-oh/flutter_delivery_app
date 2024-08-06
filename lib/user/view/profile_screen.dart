@@ -1,4 +1,5 @@
 import 'package:delivery_flutter_app/common/const/colors.dart';
+import 'package:delivery_flutter_app/user/model/user_model.dart';
 import 'package:delivery_flutter_app/user/provider/user_me_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,30 +9,24 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(userMeProvider);
+    final user = ref.read(userMeProvider) as UserModel;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           ListTile(
-            leading: ImageIcon(
-              AssetImage(
-                'asset/img/logo/ethan_logo.png',
+            leading: SizedBox(
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(user.imageUrl),
               ),
-              color: PRIMARY_COLOR,
-              size: 50,
             ),
-            // leading: CircleAvatar(
-            //   child: Image.asset(
-            //     'asset/img/logo/ethan_logo.png',
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            title: Text('Ethan'),
-            subtitle: Text('test@tesasdfasdfasdft.com'),
+            title: Text(user.username.split('@')[0]),
+            subtitle: Text(user.username),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              ref.read(userMeProvider.notifier).logout();
+            },
             child: Text('로그아웃'),
           ),
         ],
