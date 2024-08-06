@@ -4,6 +4,7 @@ import 'package:delivery_flutter_app/product/product_model.dart';
 import 'package:delivery_flutter_app/product/provider/product_provider.dart';
 import 'package:delivery_flutter_app/restaurant/view/restaurant_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key});
@@ -13,11 +14,11 @@ class ProductScreen extends StatelessWidget {
     return PaginationListView<ProductModel>(
       provider: productProvider,
       itemBuilder: (context, index, model) => GestureDetector(
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) =>
-                RestaurantDetailScreen(id: model.restaurant.id),
-          ),
+        onTap: () => context.goNamed(
+          RestaurantDetailScreen.routeName,
+          pathParameters: {
+            'rid': model.restaurant.id,
+          },
         ),
         child: ProductCard.fromProductModel(model: model),
       ),

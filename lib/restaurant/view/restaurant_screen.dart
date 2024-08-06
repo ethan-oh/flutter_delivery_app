@@ -4,6 +4,7 @@ import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
 import 'package:delivery_flutter_app/restaurant/provider/restaurant_provider.dart';
 import 'package:delivery_flutter_app/restaurant/view/restaurant_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({super.key});
@@ -14,13 +15,8 @@ class RestaurantScreen extends StatelessWidget {
       provider: restaurantProvider,
       itemBuilder: (context, index, model) => InkWell(
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => RestaurantDetailScreen(
-                id: model.id,
-              ),
-            ),
-          );
+          context.goNamed(RestaurantDetailScreen.routeName,
+              pathParameters: {'rid': model.id});
         },
         child: RestaurantCard.fromModel(
           model: model,

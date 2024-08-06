@@ -89,4 +89,8 @@ class AuthProvider extends ChangeNotifier {
 
     return null;
   }
+
+  logout() {
+    ref.read(userMeProvider.notifier).logout();
+  }
 }

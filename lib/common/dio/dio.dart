@@ -1,5 +1,6 @@
 import 'package:delivery_flutter_app/common/const/data.dart';
 import 'package:delivery_flutter_app/common/storage/secure_storage.dart';
+import 'package:delivery_flutter_app/user/provider/auth_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,17 +10,19 @@ final dioProvider = Provider(
   (ref) {
     final dio = Dio();
     final storage = ref.watch(secureStorageProvider);
-    dio.interceptors.add(CustomInterceptor(storage));
+    dio.interceptors.add(CustomInterceptor(storage: storage, ref: ref));
     return dio;
   },
 );
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
+  final Ref ref;
 
-  CustomInterceptor(
-    this.storage,
-  );
+  CustomInterceptor({
+    required this.storage,
+    required this.ref,
+  });
   // 요청 보내기 전
   @override
   void onRequest(
@@ -72,7 +75,7 @@ class CustomInterceptor extends Interceptor {
 
     if (isStatus401 && !isPathRefresh) {
       try {
-        final dio = Dio()..interceptors.add(CustomInterceptor(storage));
+        final dio = Dio();
         final resp = await dio.post(
           'http://$ip/auth/token',
           options: Options(
@@ -93,6 +96,13 @@ class CustomInterceptor extends Interceptor {
         // 해결 되었음을 알려줌
         return handler.resolve(response);
       } on DioException catch (e) {
+        // userMeProvider와 dioProvider가 서로 참조하는
+        // CircularDependency Error 를 막기 위해
+        // userMeProvider의 logout을 실행하는 것이 아니라
+        // dio를 참조하지 않는 authProvider에서
+        // userMeProvider의 logout을 호출하는 함수를 만들어 실행한다.
+        print('리프레시 만료');
+        ref.read(authProvider.notifier).logout();
         return handler.reject(e);
       }
     }
