@@ -1,18 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'basket_model.dart';
+part of 'patch_basket_body.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BasketModel _$BasketModelFromJson(Map<String, dynamic> json) => BasketModel(
-      product: ProductModel.fromJson(json['product'] as Map<String, dynamic>),
+PatchBasketBody _$PatchBasketBodyFromJson(Map<String, dynamic> json) =>
+    PatchBasketBody(
+      productId: json['productId'] as String,
       count: (json['count'] as num).toInt(),
     );
 
-Map<String, dynamic> _$BasketModelToJson(BasketModel instance) =>
+Map<String, dynamic> _$PatchBasketBodyToJson(PatchBasketBody instance) =>
     <String, dynamic>{
-      'product': instance.product,
+      'productId': instance.productId,
       'count': instance.count,
     };
