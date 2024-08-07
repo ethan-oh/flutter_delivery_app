@@ -10,20 +10,10 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultLayout(
         backgroundColor: PRIMARY_COLOR,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'asset/img/logo/ethan_logo.png',
-                width: MediaQuery.of(context).size.width / 1.5,
-              ),
-              const SizedBox(height: 16),
-              const CircularProgressIndicator(
-                color: Colors.white,
-              )
-            ],
+        child: Center(
+          child: Image.asset(
+            'asset/img/logo/ethan_logo.png',
+            width: MediaQuery.of(context).size.width / 1.5,
           ),
         ));
   }

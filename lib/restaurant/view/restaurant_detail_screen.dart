@@ -1,7 +1,9 @@
+import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:delivery_flutter_app/common/model/cursor_pagination_model.dart';
 import 'package:delivery_flutter_app/common/utils/pagination_utils.dart';
 import 'package:delivery_flutter_app/product/component/product_card.dart';
+import 'package:delivery_flutter_app/product/product_model.dart';
 import 'package:delivery_flutter_app/rating/component/rating_card.dart';
 import 'package:delivery_flutter_app/rating/model/rating_model.dart';
 import 'package:delivery_flutter_app/restaurant/component/restaurant_card.dart';
@@ -9,11 +11,16 @@ import 'package:delivery_flutter_app/restaurant/model/restaurant_detail_model.da
 import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
 import 'package:delivery_flutter_app/restaurant/provider/restaurant_provider.dart';
 import 'package:delivery_flutter_app/restaurant/provider/restaurant_rating_provider.dart';
+import 'package:delivery_flutter_app/restaurant/view/basket_screen.dart';
+import 'package:delivery_flutter_app/user/model/basket_item_model.dart';
+import 'package:delivery_flutter_app/user/provider/basket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:badges/badges.dart' as badges;
 
-class RestaurantDetailScreen extends ConsumerStatefulWidget {
+final class RestaurantDetailScreen extends ConsumerStatefulWidget {
   static String get routeName => 'detail';
   final String id;
 
@@ -30,7 +37,6 @@ class RestaurantDetailScreen extends ConsumerStatefulWidget {
 class _RestaurantDetailScreenState
     extends ConsumerState<RestaurantDetailScreen> {
   final ScrollController controller = ScrollController();
-  bool isExpanded = true;
   @override
   void initState() {
     super.initState();
@@ -51,15 +57,13 @@ class _RestaurantDetailScreenState
         restaurantRatingProvider(widget.id).notifier,
       ),
     );
-    const double expandAppBarHeight = 120;
-    setState(() {
-      isExpanded = controller.offset < expandAppBarHeight ? true : false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('리빌드');
     final state = ref.watch(restaurantDetailProvider(widget.id));
+
     final ratingsState = ref.watch(restaurantRatingProvider(widget.id));
 
     // product탭에서 restaurantProvider에 존재하지 않는 값의 detail을 요청했을 때
@@ -75,17 +79,22 @@ class _RestaurantDetailScreenState
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: CustomScrollView(
         controller: controller,
         slivers: [
-          _buildSliverAppbar(state),
+          Consumer(
+            builder: (context, ref, child) => _buildSliverAppbar(
+              state,
+              ref.watch(basketProvider),
+            ),
+          ),
           _buildTop(
             model: state,
           ),
           if (state is! RestaurantDetailModel) _buildLoading(),
           if (state is RestaurantDetailModel) _buildLabel(text: '메뉴'),
-          if (state is RestaurantDetailModel)
-            _buildProducts(products: state.products),
+          if (state is RestaurantDetailModel) _buildProducts(restaurant: state),
           if (state is RestaurantDetailModel)
             _buildLabel(text: '리뷰 ${state.ratingsCount}개'),
           if (ratingsState is CursorPagination<RatingModel>)
@@ -97,24 +106,50 @@ class _RestaurantDetailScreenState
 
 ////////////////////
 
-  SliverAppBar _buildSliverAppbar(RestaurantModel state) {
+  SliverAppBar _buildSliverAppbar(
+      RestaurantModel state, List<BasketItemModel> basket) {
     return SliverAppBar(
-      forceElevated: true,
       pinned: true,
       stretch: true,
       floating: false,
-      title: Text(
-        state.name,
-        style: TextStyle(
-          color: isExpanded ? Colors.transparent : Colors.black,
+      actions: [
+        Container(
+          padding: EdgeInsets.only(right: 16),
+          child: IconButton(
+            onPressed: () => context.pushNamed(BasketScreen.routeName),
+            icon: badges.Badge(
+              showBadge: basket.isNotEmpty,
+              position: badges.BadgePosition.bottomEnd(),
+              badgeStyle: badges.BadgeStyle(badgeColor: Colors.white),
+              badgeContent: Text(
+                basket
+                    .fold(
+                        0,
+                        (previousValue, element) =>
+                            previousValue + element.count)
+                    .toString(),
+                style: TextStyle(
+                    color: PRIMARY_COLOR,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 10),
+              ),
+              child: Icon(
+                Icons.shopping_basket_outlined,
+                size: 28,
+              ),
+            ),
+          ),
         ),
-      ),
+      ],
       elevation: 0,
       expandedHeight: 200,
-      collapsedHeight: kToolbarHeight,
-      backgroundColor: isExpanded ? Colors.transparent : Colors.white,
-      foregroundColor: isExpanded ? Colors.white : Colors.black,
+      backgroundColor: PRIMARY_COLOR,
+      foregroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
+        title: Text(
+          state.name,
+          style: TextStyle(color: Colors.white),
+        ),
         stretchModes: const [StretchMode.zoomBackground],
         background: Stack(
           fit: StackFit.expand,
@@ -148,7 +183,7 @@ class _RestaurantDetailScreenState
 
   SliverPadding _buildRatings({required CursorPaginationBase ratingsState}) {
     return SliverPadding(
-      padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+      padding: EdgeInsets.only(bottom: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -233,20 +268,32 @@ class _RestaurantDetailScreenState
     );
   }
 
-  SliverPadding _buildProducts(
-      {required List<RestaurantProductModel> products}) {
+  SliverPadding _buildProducts({required RestaurantDetailModel restaurant}) {
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            final model = products[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: ProductCard.fromModel(model: model),
+            final model = restaurant.products[index];
+            return InkWell(
+              onTap: () {
+                ref.read(basketProvider.notifier).addToBasket(
+                        product: ProductModel(
+                      id: model.id,
+                      name: model.name,
+                      detail: model.detail,
+                      imgUrl: model.imgUrl,
+                      price: model.price,
+                      restaurant: restaurant,
+                    ));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: ProductCard.fromModel(model: model),
+              ),
             );
           },
-          childCount: products.length,
+          childCount: restaurant.products.length,
         ),
       ),
     );

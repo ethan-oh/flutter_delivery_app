@@ -37,13 +37,19 @@ class RatingCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _Header(
-            avartarImage: avartarImage,
-            rating: rating,
-            email: email,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _Header(
+              avartarImage: avartarImage,
+              rating: rating,
+              email: email,
+            ),
           ),
           const SizedBox(height: 8),
-          _Body(content: content),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _Body(content: content),
+          ),
           const SizedBox(height: 8),
           _Images(images: images),
         ],
@@ -153,9 +159,7 @@ class _Images extends StatelessWidget {
         children: images
             .mapIndexed(
               (index, element) => Padding(
-                padding: EdgeInsets.only(
-                  right: (index == images.length - 1) ? 0 : 16,
-                ),
+                padding: EdgeInsets.only(left: index == 0 ? 16 : 0, right: 16),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: element,

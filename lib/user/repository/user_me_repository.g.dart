@@ -78,7 +78,7 @@ class _UserMeRepository implements UserMeRepository {
 
   @override
   Future<List<BasketItemModel>> patchBasket(
-      {required PatchBasketBody body}) async {
+      {required PatchBasketBodyBasket body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};

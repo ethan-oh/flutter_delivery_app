@@ -81,7 +81,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         children: const [
           RestaurantScreen(),
           ProductScreen(),
-          Center(child: Text('주문')),
+          SizedBox(),
           ProfileScreen(),
         ],
       ),

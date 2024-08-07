@@ -4,7 +4,8 @@ import 'package:delivery_flutter_app/user/repository/user_me_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 
-final basketProvider = StateNotifierProvider(
+final basketProvider =
+    StateNotifierProvider<BasketProvider, List<BasketItemModel>>(
   (ref) {
     final repository = ref.watch(userMeRepositoryProvider);
     return BasketProvider(repository: repository);
@@ -39,14 +40,14 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
     }
   }
 
-  removeToBasket({required String id}) {
+  removeFromBasket({required String id, bool isDelete = false}) {
     final existingProduct = state.firstWhereOrNull((e) => e.product.id == id);
 
     if (existingProduct == null) {
       return;
     }
 
-    if (existingProduct.count == 1) {
+    if (existingProduct.count == 1 || isDelete) {
       state = state.where((e) => e.product.id != id).toList();
     } else {
       state = state
