@@ -77,33 +77,39 @@ class _PaginationListViewState<T extends IModelWithId>
 
     state as CursorPagination;
 
-    return ListView.separated(
-      controller: controller,
-      itemCount: state.data.length + 1,
-      separatorBuilder: (context, index) => const Divider(
-        height: 30,
-      ),
-      itemBuilder: (context, index) {
-        if (index == state.data.length) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Center(
-              child: state is CursorPaginationFetchingMore
-                  ? CircularProgressIndicator()
-                  : Text(
-                      '마지막입니다.',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
-            ),
-          );
-        }
-        final model = state.data[index];
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: widget.itemBuilder(context, index, model),
-        );
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.read(widget.provider.notifier).paginate(forceRefetch: true);
       },
+      child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+        controller: controller,
+        itemCount: state.data.length + 1,
+        separatorBuilder: (context, index) => const Divider(
+          height: 30,
+        ),
+        itemBuilder: (context, index) {
+          if (index == state.data.length) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Center(
+                child: state is CursorPaginationFetchingMore
+                    ? CircularProgressIndicator()
+                    : Text(
+                        '마지막입니다.',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16),
+                      ),
+              ),
+            );
+          }
+          final model = state.data[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: widget.itemBuilder(context, index, model),
+          );
+        },
+      ),
     );
   }
 }
