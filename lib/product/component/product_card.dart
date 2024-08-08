@@ -1,4 +1,5 @@
 import 'package:delivery_flutter_app/common/const/colors.dart';
+import 'package:delivery_flutter_app/common/utils/data_utils.dart';
 import 'package:delivery_flutter_app/product/product_model.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_detail_model.dart';
 import 'package:delivery_flutter_app/user/provider/basket_provider.dart';
@@ -100,7 +101,7 @@ class ProductCard extends ConsumerWidget {
                       ),
                     ),
                     Text(
-                      '₩$price',
+                      DataUtils.intToPriceString(price),
                       textAlign: TextAlign.right,
                       style: TextStyle(
                           color: PRIMARY_COLOR,
@@ -117,16 +118,19 @@ class ProductCard extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Container(
-              color: Colors.grey.withOpacity(0.1),
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
                 child: _Footer(
                   total: (basket.firstWhere((e) => e.product.id == id).count *
-                          basket
-                              .firstWhere((e) => e.product.id == id)
-                              .product
-                              .price)
-                      .toString(),
+                      basket
+                          .firstWhere((e) => e.product.id == id)
+                          .product
+                          .price),
                   count: basket.firstWhere((e) => e.product.id == id).count,
                   onSubtract: onSubtract!,
                   onAdd: onAdd!,
@@ -140,7 +144,7 @@ class ProductCard extends ConsumerWidget {
 }
 
 class _Footer extends StatelessWidget {
-  final String total;
+  final int total;
   final int count;
   final VoidCallback onSubtract;
   final VoidCallback onAdd;
@@ -153,55 +157,62 @@ class _Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            '총액: ₩ ${total}',
-            style: TextStyle(
-              color: PRIMARY_COLOR,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        Row(
-          children: [
-            buildButton(
-              icon: Icons.remove,
-              ontap: onSubtract,
-            ),
-            SizedBox(
-              width: 8,
-            ),
-            Text(
-              count.toString(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              '총금액: ${DataUtils.intToPriceString(total)}',
               style: TextStyle(
                 color: PRIMARY_COLOR,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(
-              width: 8,
-            ),
-            buildButton(
-              icon: Icons.add,
-              ontap: onAdd,
-            ),
-          ],
-        )
-      ],
+          ),
+          Row(
+            children: [
+              buildButton(
+                icon: count != 1 ? Icons.remove : Icons.delete_outlined,
+                color: count != 1
+                    ? PRIMARY_COLOR
+                    : Color.fromARGB(255, 207, 44, 32),
+                ontap: onSubtract,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                count.toString(),
+                style: TextStyle(
+                  color: PRIMARY_COLOR,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              buildButton(
+                icon: Icons.add,
+                ontap: onAdd,
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 
   Widget buildButton({
     required IconData icon,
     required VoidCallback ontap,
+    Color color = PRIMARY_COLOR,
   }) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: PRIMARY_COLOR,
-        border: Border.all(color: PRIMARY_COLOR, width: 1),
+        borderRadius: BorderRadius.circular(8),
+        color: color,
+        border: Border.all(color: color, width: 2),
       ),
       child: InkWell(
         onTap: ontap,

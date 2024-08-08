@@ -1,5 +1,6 @@
 import 'package:delivery_flutter_app/common/view/root_tab.dart';
 import 'package:delivery_flutter_app/common/view/splash_screen.dart';
+import 'package:delivery_flutter_app/order/view/order_done_screen.dart';
 import 'package:delivery_flutter_app/restaurant/view/basket_screen.dart';
 import 'package:delivery_flutter_app/restaurant/view/restaurant_detail_screen.dart';
 import 'package:delivery_flutter_app/user/model/user_model.dart';
@@ -37,6 +38,7 @@ class AuthProvider extends ChangeNotifier {
   List<GoRoute> get routes => [
         GoRoute(
           path: '/',
+          name: RootTab.routeName,
           builder: (_, __) => RootTab(),
           routes: [
             GoRoute(
@@ -52,6 +54,11 @@ class AuthProvider extends ChangeNotifier {
           path: '/basket',
           name: BasketScreen.routeName,
           builder: (_, state) => BasketScreen(),
+        ),
+        GoRoute(
+          path: '/order_done',
+          name: OrderDoneScreen.routeName,
+          builder: (_, state) => OrderDoneScreen(),
         ),
         GoRoute(
           path: '/splash',

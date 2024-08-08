@@ -91,7 +91,7 @@ class _PaginationListViewState<T extends IModelWithId>
               child: state is CursorPaginationFetchingMore
                   ? CircularProgressIndicator()
                   : Text(
-                      '마지막 식당입니다',
+                      '마지막입니다.',
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                     ),

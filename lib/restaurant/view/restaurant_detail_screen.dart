@@ -61,7 +61,6 @@ class _RestaurantDetailScreenState
 
   @override
   Widget build(BuildContext context) {
-    print('리빌드');
     final state = ref.watch(restaurantDetailProvider(widget.id));
 
     final ratingsState = ref.watch(restaurantRatingProvider(widget.id));
@@ -201,7 +200,9 @@ class _RestaurantDetailScreenState
                 ),
               );
             }
-            return RatingCard.fromModel(model: ratingsState.data[index]);
+            return RatingCard.fromModel(
+              model: ratingsState.data[index],
+            );
           },
           childCount: (ratingsState as CursorPagination).data.length + 1,
         ),
@@ -289,7 +290,9 @@ class _RestaurantDetailScreenState
               },
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 16),
-                child: ProductCard.fromModel(model: model),
+                child: ProductCard.fromModel(
+                  model: model,
+                ),
               ),
             );
           },

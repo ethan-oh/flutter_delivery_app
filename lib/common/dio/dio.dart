@@ -75,7 +75,7 @@ class CustomInterceptor extends Interceptor {
 
     if (isStatus401 && !isPathRefresh) {
       try {
-        final dio = Dio();
+        final dio = Dio()..interceptors;
         final resp = await dio.post(
           'http://$ip/auth/token',
           options: Options(
@@ -84,6 +84,7 @@ class CustomInterceptor extends Interceptor {
             },
           ),
         );
+        debugPrint('토큰 갱신');
         final accessToken = resp.data['accessToken'];
         final options = err.requestOptions;
 
@@ -94,6 +95,7 @@ class CustomInterceptor extends Interceptor {
         // 기존 요청 재전송
         final response = await dio.fetch(options);
         // 해결 되었음을 알려줌
+        debugPrint('재요청 성공');
         return handler.resolve(response);
       } on DioException catch (e) {
         // userMeProvider와 dioProvider가 서로 참조하는
@@ -101,7 +103,7 @@ class CustomInterceptor extends Interceptor {
         // userMeProvider의 logout을 실행하는 것이 아니라
         // dio를 참조하지 않는 authProvider에서
         // userMeProvider의 logout을 호출하는 함수를 만들어 실행한다.
-        print('리프레시 만료');
+        debugPrint('리프레시 만료');
         ref.read(authProvider.notifier).logout();
         return handler.reject(e);
       }

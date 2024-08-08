@@ -12,6 +12,7 @@ class LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userMeProvider);
     String username = '';
     String password = '';
     return DefaultLayout(
@@ -48,7 +49,7 @@ class LoginScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: ref.read(userMeProvider) is UserModelLoading
+                  onPressed: user is UserModelLoading
                       ? null
                       : () => ref
                               .read(userMeProvider.notifier)
