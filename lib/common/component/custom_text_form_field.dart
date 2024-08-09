@@ -6,15 +6,17 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorText;
   final bool obscureText;
   final bool autofocus;
-  final ValueChanged? onChanged;
+  final FormFieldSetter? onSaved;
+  final FormFieldValidator? validatior;
 
   const CustomTextFormField({
     super.key,
     this.hintText,
     this.errorText,
-    this.onChanged,
+    this.onSaved,
     this.obscureText = false,
     this.autofocus = false,
+    this.validatior,
   });
 
   @override
@@ -27,7 +29,8 @@ class CustomTextFormField extends StatelessWidget {
       cursorColor: PRIMARY_COLOR,
       obscureText: obscureText,
       autofocus: autofocus,
-      onChanged: onChanged,
+      onSaved: onSaved,
+      validator: validatior,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         hintText: hintText,

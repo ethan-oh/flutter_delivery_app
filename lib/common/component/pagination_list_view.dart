@@ -53,7 +53,7 @@ class _PaginationListViewState<T extends IModelWithId>
 
     // case 1: 첫 fetch 로딩
     if (state is CursorPaginationLoading) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -68,8 +68,8 @@ class _PaginationListViewState<T extends IModelWithId>
             onPressed: () {
               ref.read(widget.provider.notifier).paginate(forceRefetch: true);
             },
-            icon: Icon(Icons.refresh),
-            label: Text('다시 시도'),
+            icon: const Icon(Icons.refresh),
+            label: const Text('다시 시도'),
           ),
         ],
       );
@@ -94,12 +94,8 @@ class _PaginationListViewState<T extends IModelWithId>
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Center(
                 child: state is CursorPaginationFetchingMore
-                    ? CircularProgressIndicator()
-                    : Text(
-                        '마지막입니다.',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 16),
-                      ),
+                    ? const CircularProgressIndicator()
+                    : const SizedBox.shrink(),
               ),
             );
           }

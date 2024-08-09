@@ -12,8 +12,8 @@ class SplashScreen extends StatelessWidget {
         backgroundColor: PRIMARY_COLOR,
         child: Center(
           child: Image.asset(
-            'asset/img/logo/ethan_logo.png',
-            width: MediaQuery.of(context).size.width / 1.5,
+            'asset/img/logo/my_logo.png',
+            width: MediaQuery.of(context).size.width * 0.85,
           ),
         ));
   }

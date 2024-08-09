@@ -2,6 +2,7 @@ import 'package:delivery_flutter_app/common/model/cursor_pagination_model.dart';
 import 'package:delivery_flutter_app/common/provider/pagination_provider.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
 import 'package:delivery_flutter_app/restaurant/repository/restaurant_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
@@ -54,7 +55,7 @@ class RestaurantStateNotifier
           (element) => element.id == id,
         )
         .isEmpty) {
-      print('데이터 추가');
+      debugPrint('데이터 추가');
       state = pState.copyWith(
         data: <RestaurantModel>[
           ...pState.data,

@@ -15,9 +15,6 @@ class DataUtils {
   }
 
   static DateTime stringToDateTime(String value) {
-    print('---');
-    print(value);
-    print(DateTime.parse(value));
     return DateTime.parse(value);
   }
 
@@ -33,7 +30,7 @@ class DataUtils {
       int indexFromEnd = amountStr.length - 1 - i;
       // 천 단위로 쉼표 추가
       if (indexFromEnd > 0 && indexFromEnd % 3 == 0) {
-        formatted = ',' + formatted;
+        formatted = ',$formatted';
       }
       // 결과 문자열에 현재 문자 추가
       formatted = amountStr[i] + formatted;

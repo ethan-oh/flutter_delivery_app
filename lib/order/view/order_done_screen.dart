@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 class OrderDoneScreen extends StatelessWidget {
   static String get routeName => 'orderDone';
 
-  const OrderDoneScreen({Key? key}) : super(key: key);
+  const OrderDoneScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +18,13 @@ class OrderDoneScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.thumb_up_alt_outlined,
               color: PRIMARY_COLOR,
               size: 50.0,
             ),
             const SizedBox(height: 32.0),
-            Text(
+            const Text(
               '결제가 완료되었습니다.',
               textAlign: TextAlign.center,
             ),
@@ -33,7 +33,7 @@ class OrderDoneScreen extends StatelessWidget {
               onPressed: () {
                 context.goNamed(RootTab.routeName);
               },
-              child: Text(
+              child: const Text(
                 '홈으로',
               ),
             ),

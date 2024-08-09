@@ -16,8 +16,8 @@ class OrderCard extends StatelessWidget {
     required this.name,
     required this.productsDetail,
     required this.price,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   factory OrderCard.fromModel({
     required OrderModel model,
@@ -62,13 +62,13 @@ class OrderCard extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14.0,
                   ),
                 ),
                 Text(
                   '$productsDetail ${DataUtils.intToPriceString(price)}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: BODY_TEXT_COLOR,
                     fontWeight: FontWeight.w300,
                   ),

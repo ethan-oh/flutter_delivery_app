@@ -80,7 +80,7 @@ class ProductCard extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: image,
               ),
-              SizedBox(width: 16.0),
+              const SizedBox(width: 16.0),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -88,14 +88,14 @@ class ProductCard extends ConsumerWidget {
                   children: [
                     Text(
                       name,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w500),
                     ),
                     Text(
                       detail,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: BODY_TEXT_COLOR,
                         fontSize: 14,
                       ),
@@ -103,7 +103,7 @@ class ProductCard extends ConsumerWidget {
                     Text(
                       DataUtils.intToPriceString(price),
                       textAlign: TextAlign.right,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: PRIMARY_COLOR,
                           fontSize: 12,
                           fontWeight: FontWeight.w500),
@@ -164,7 +164,7 @@ class _Footer extends StatelessWidget {
           Expanded(
             child: Text(
               '총금액: ${DataUtils.intToPriceString(total)}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: PRIMARY_COLOR,
                 fontWeight: FontWeight.w500,
               ),
@@ -176,20 +176,20 @@ class _Footer extends StatelessWidget {
                 icon: count != 1 ? Icons.remove : Icons.delete_outlined,
                 color: count != 1
                     ? PRIMARY_COLOR
-                    : Color.fromARGB(255, 207, 44, 32),
+                    : const Color.fromARGB(255, 207, 44, 32),
                 ontap: onSubtract,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(
                 count.toString(),
-                style: TextStyle(
+                style: const TextStyle(
                   color: PRIMARY_COLOR,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               buildButton(

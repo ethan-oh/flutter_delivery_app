@@ -5,7 +5,6 @@ import 'package:delivery_flutter_app/common/model/pagination_params.dart';
 import 'package:delivery_flutter_app/common/repository/base_pagination_repository.dart';
 import 'package:delivery_flutter_app/order/model/order_model.dart';
 import 'package:delivery_flutter_app/order/model/post_order_body.dart';
-import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/http.dart';
@@ -24,6 +23,7 @@ abstract class OrderRepository
     implements IBasePaginationRepository<OrderModel> {
   factory OrderRepository(Dio dio, {String baseUrl}) = _OrderRepository;
 
+  @override
   @GET('/')
   @Headers({'accessToken': 'true'})
   Future<CursorPagination<OrderModel>> paginate({

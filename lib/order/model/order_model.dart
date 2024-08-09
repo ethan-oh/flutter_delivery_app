@@ -7,6 +7,7 @@ part 'order_model.g.dart';
 
 @JsonSerializable()
 class OrderModel implements IModelWithId {
+  @override
   final String id;
   final RestaurantModel restaurant;
   final List<OrderProductAndCountModel> products;

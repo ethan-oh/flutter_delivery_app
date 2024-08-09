@@ -106,7 +106,7 @@ class _HeaderState extends State<_Header> {
           child: Text(
             widget.email,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
               color: Colors.black,
               fontWeight: FontWeight.w500,

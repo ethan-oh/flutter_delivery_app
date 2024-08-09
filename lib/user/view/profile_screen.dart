@@ -26,7 +26,7 @@ class ProfileScreen extends ConsumerWidget {
             onPressed: () {
               ref.read(userMeProvider.notifier).logout();
             },
-            child: Text('로그아웃'),
+            child: const Text('로그아웃'),
           ),
         ],
       ),

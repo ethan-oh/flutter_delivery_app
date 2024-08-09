@@ -4,6 +4,7 @@ import 'package:delivery_flutter_app/order/model/order_model.dart';
 import 'package:delivery_flutter_app/order/model/post_order_body.dart';
 import 'package:delivery_flutter_app/order/repository/order_repository.dart';
 import 'package:delivery_flutter_app/user/provider/basket_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -22,7 +23,7 @@ class OrderProvider extends PaginationProvider<OrderModel, OrderRepository> {
 
   Future<bool> postOrder() async {
     try {
-      final String id = Uuid().v4();
+      final String id = const Uuid().v4();
       final basket = ref.read(basketProvider);
       final totalPrice = ref.read(basketProvider.notifier).totalPrice;
       await repository.postOrder(
@@ -40,7 +41,7 @@ class OrderProvider extends PaginationProvider<OrderModel, OrderRepository> {
       );
       return true;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return false;
     }
   }

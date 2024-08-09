@@ -39,7 +39,7 @@ class AuthProvider extends ChangeNotifier {
         GoRoute(
           path: '/',
           name: RootTab.routeName,
-          builder: (_, __) => RootTab(),
+          builder: (_, __) => const RootTab(),
           routes: [
             GoRoute(
               path: 'restaurant/:rid',
@@ -53,22 +53,22 @@ class AuthProvider extends ChangeNotifier {
         GoRoute(
           path: '/basket',
           name: BasketScreen.routeName,
-          builder: (_, state) => BasketScreen(),
+          builder: (_, state) => const BasketScreen(),
         ),
         GoRoute(
           path: '/order_done',
           name: OrderDoneScreen.routeName,
-          builder: (_, state) => OrderDoneScreen(),
+          builder: (_, state) => const OrderDoneScreen(),
         ),
         GoRoute(
           path: '/splash',
           name: SplashScreen.routeName,
-          builder: (_, __) => SplashScreen(),
+          builder: (_, __) => const SplashScreen(),
         ),
         GoRoute(
           path: '/login',
           name: LoginScreen.routeName,
-          builder: (_, __) => LoginScreen(),
+          builder: (_, __) => const LoginScreen(),
         ),
       ];
 

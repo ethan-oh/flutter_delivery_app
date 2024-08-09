@@ -21,30 +21,6 @@ class BasketScreen extends ConsumerWidget {
     int basketTotalCost = ref.read(basketProvider.notifier).totalPrice;
     return DefaultLayout(
       title: '장바구니',
-      child: basket.isEmpty
-          ? Center(
-              child: Text('장바구니에 상품이 없습니다.'),
-            )
-          : ListView.separated(
-              itemBuilder: (context, index) {
-                final BasketItemModel model = basket[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ProductCard.fromProductModel(
-                    model: model.product,
-                    onSubtract: () => ref
-                        .read(basketProvider.notifier)
-                        .removeFromBasket(id: model.product.id),
-                    onAdd: () => ref.read(basketProvider.notifier).addToBasket(
-                          product: model.product,
-                        ),
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => Divider(
-                    height: 32,
-                  ),
-              itemCount: basket.length),
       persistentFooterButtons: basket.isEmpty
           ? null
           : [
@@ -55,7 +31,7 @@ class BasketScreen extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           '총 상품 금액',
                           style: TextStyle(color: BODY_TEXT_COLOR),
                         ),
@@ -67,7 +43,7 @@ class BasketScreen extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           '배달비',
                           style: TextStyle(color: BODY_TEXT_COLOR),
                         ),
@@ -79,14 +55,14 @@ class BasketScreen extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           '총 결제 예상 금액',
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         Text(
                           DataUtils.intToPriceString(
                               basketTotalCost + deliveryFee),
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -105,17 +81,41 @@ class BasketScreen extends ConsumerWidget {
                                 .read(orderProvider.notifier)
                                 .paginate(forceRefetch: true);
                           } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(SnackBar(content: Text('결제 실패')));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('결제 실패')));
                           }
                         },
-                        child: Text('결제하기'),
+                        child: const Text('결제하기'),
                       ),
                     ),
                   ],
                 ),
               ),
             ],
+      child: basket.isEmpty
+          ? const Center(
+              child: Text('장바구니에 상품이 없습니다.'),
+            )
+          : ListView.separated(
+              itemBuilder: (context, index) {
+                final BasketItemModel model = basket[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: ProductCard.fromProductModel(
+                    model: model.product,
+                    onSubtract: () => ref
+                        .read(basketProvider.notifier)
+                        .removeFromBasket(id: model.product.id),
+                    onAdd: () => ref.read(basketProvider.notifier).addToBasket(
+                          product: model.product,
+                        ),
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) => const Divider(
+                    height: 32,
+                  ),
+              itemCount: basket.length),
     );
   }
 }

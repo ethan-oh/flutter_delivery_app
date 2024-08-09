@@ -45,8 +45,15 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         currentIndex: index,
         selectedItemColor: PRIMARY_COLOR,
         unselectedItemColor: BODY_TEXT_COLOR,
-        selectedFontSize: 10.0,
-        unselectedFontSize: 10.0,
+        selectedIconTheme: const IconThemeData(size: 30),
+        selectedLabelStyle: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w500,
+        ),
         type: BottomNavigationBarType.fixed,
         onTap: (index) => controller.animateTo(index),
         items: const [
@@ -78,7 +85,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       ),
       child: TabBarView(
         controller: controller,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: const [
           RestaurantScreen(),
           ProductScreen(),

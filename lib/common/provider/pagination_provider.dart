@@ -1,17 +1,45 @@
+import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:delivery_flutter_app/common/model/cursor_pagination_model.dart';
 import 'package:delivery_flutter_app/common/model/model_with_id.dart';
 import 'package:delivery_flutter_app/common/model/pagination_params.dart';
 import 'package:delivery_flutter_app/common/repository/base_pagination_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class PaginationInfo {
+  final int fetchCount;
+  // 데이터 추가 요청
+  final bool fetchMore;
+  // 강제로 로딩할지 (true: CursorPaginationLoading())
+  final bool forceRefetch;
+
+  PaginationInfo({
+    this.fetchCount = 20,
+    this.fetchMore = false,
+    this.forceRefetch = false,
+  });
+}
 
 class PaginationProvider<T extends IModelWithId,
         U extends IBasePaginationRepository<T>>
     extends StateNotifier<CursorPaginationBase> {
   final U repository;
 
+  final paginationThrottle = Throttle(
+    const Duration(seconds: 3),
+    initialValue: PaginationInfo(),
+    checkEquality: false,
+  );
+
   PaginationProvider({required this.repository})
       : super(CursorPaginationLoading()) {
     paginate();
+
+    paginationThrottle.values.listen(
+      (state) {
+        _throttledPagination(state);
+      },
+    );
   }
 
   Future<void> paginate({
@@ -21,6 +49,20 @@ class PaginationProvider<T extends IModelWithId,
     // 강제로 로딩할지 (true: CursorPaginationLoading())
     bool forceRefetch = false,
   }) async {
+    paginationThrottle.setValue(
+      PaginationInfo(
+        fetchCount: fetchCount,
+        fetchMore: fetchMore,
+        forceRefetch: forceRefetch,
+      ),
+    );
+  }
+
+  _throttledPagination(PaginationInfo info) async {
+    final fetchCount = info.fetchCount;
+    final fetchMore = info.fetchMore;
+    final forceRefetch = info.forceRefetch;
+
     final isLoading = state is CursorPaginationLoading;
     final isRefetcing = state is CursorPaginationRefetching;
     final isFetcingMore = state is CursorPaginationFetchingMore;
@@ -31,6 +73,7 @@ class PaginationProvider<T extends IModelWithId,
         // CursorPagination 타입인 경우는 데이터가 있는 경우이기 때문에 캐스팅 가능
         final pState = state as CursorPagination;
         // hasMore = false 즉, 더이상 가져올 데이터가 없을 때
+        // if (!pState.meta.hasMore && pState.data.length >= fetchCount) {
         if (!pState.meta.hasMore) {
           return;
         }
@@ -74,7 +117,6 @@ class PaginationProvider<T extends IModelWithId,
           state = CursorPaginationLoading();
         }
       }
-
       // 데이터 요청(fetchMore 전처리 완료)
       final resp = await repository.paginate(params: params);
 
@@ -94,9 +136,10 @@ class PaginationProvider<T extends IModelWithId,
       else {
         // 통째로 넣어줌
         state = resp;
+        return;
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
 
       state = CursorPaginationError(message: '데이터를 불러오는 데 실패했습니다.');
       return;

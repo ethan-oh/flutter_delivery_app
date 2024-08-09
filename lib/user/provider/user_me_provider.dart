@@ -4,6 +4,7 @@ import 'package:delivery_flutter_app/user/model/user_model.dart';
 import 'package:delivery_flutter_app/user/repository/auth_repository.dart';
 import 'package:delivery_flutter_app/user/repository/user_me_repository.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -52,7 +53,10 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
   Future<UserModelBase> login(
       {required String username, required String password}) async {
     state = UserModelLoading();
+
     try {
+      debugPrint(username);
+      debugPrint(password);
       final resp =
           await authRepository.login(username: username, password: password);
       await storage.write(key: REFRESH_TOKEN_KEY, value: resp.refreshToken);

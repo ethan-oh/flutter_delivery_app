@@ -55,7 +55,7 @@ class RestaurantCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         isDetail
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: image,
@@ -78,7 +78,7 @@ class RestaurantCard extends StatelessWidget {
               ),
               Text(
                 tags.join(' · '),
-                style: TextStyle(color: BODY_TEXT_COLOR, fontSize: 14),
+                style: const TextStyle(color: BODY_TEXT_COLOR, fontSize: 14),
               ),
               const SizedBox(
                 height: 8.0,
@@ -149,7 +149,7 @@ class _IconText extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12.0,
             fontWeight: FontWeight.w500,
           ),
@@ -160,7 +160,7 @@ class _IconText extends StatelessWidget {
 }
 
 Widget buildDot() {
-  return Padding(
+  return const Padding(
     padding: EdgeInsets.symmetric(horizontal: 6),
     child: Text(
       '·',

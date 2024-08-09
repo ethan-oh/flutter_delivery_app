@@ -70,7 +70,7 @@ class _RestaurantDetailScreenState
     // 따라서 restaurantProvider에 존재하는 경우는 로딩 중에 skeleton 등을 그리지만
     // 이 경우에는 CircularProgressIndicator를 그린다.
     if (state == null) {
-      return DefaultLayout(
+      return const DefaultLayout(
         child: Center(
           child: CircularProgressIndicator(),
         ),
@@ -113,13 +113,13 @@ class _RestaurantDetailScreenState
       floating: false,
       actions: [
         Container(
-          padding: EdgeInsets.only(right: 16),
+          padding: const EdgeInsets.only(right: 16),
           child: IconButton(
             onPressed: () => context.pushNamed(BasketScreen.routeName),
             icon: badges.Badge(
               showBadge: basket.isNotEmpty,
               position: badges.BadgePosition.bottomEnd(),
-              badgeStyle: badges.BadgeStyle(badgeColor: Colors.white),
+              badgeStyle: const badges.BadgeStyle(badgeColor: Colors.white),
               badgeContent: Text(
                 basket
                     .fold(
@@ -127,12 +127,12 @@ class _RestaurantDetailScreenState
                         (previousValue, element) =>
                             previousValue + element.count)
                     .toString(),
-                style: TextStyle(
+                style: const TextStyle(
                     color: PRIMARY_COLOR,
                     fontWeight: FontWeight.w900,
                     fontSize: 10),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.shopping_basket_outlined,
                 size: 28,
               ),
@@ -147,7 +147,7 @@ class _RestaurantDetailScreenState
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           state.name,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         stretchModes: const [StretchMode.zoomBackground],
         background: Stack(
@@ -182,7 +182,7 @@ class _RestaurantDetailScreenState
 
   SliverPadding _buildRatings({required CursorPaginationBase ratingsState}) {
     return SliverPadding(
-      padding: EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -191,8 +191,8 @@ class _RestaurantDetailScreenState
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Center(
                   child: ratingsState is CursorPaginationFetchingMore
-                      ? CircularProgressIndicator()
-                      : Text(
+                      ? const CircularProgressIndicator()
+                      : const Text(
                           '마지막 댓글입니다',
                           style: TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 16),
@@ -212,12 +212,12 @@ class _RestaurantDetailScreenState
 
   SliverPadding _buildLoading() {
     return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       sliver: SliverList(
         delegate: SliverChildListDelegate(
           [
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
+            const Padding(
+              padding: EdgeInsets.only(top: 16),
               child: Skeletonizer.zone(
                   child: Bone.multiText(
                 lines: 4,
@@ -225,11 +225,11 @@ class _RestaurantDetailScreenState
             ),
             ...List.generate(
               4,
-              (index) => Padding(
-                padding: const EdgeInsets.only(top: 8),
+              (index) => const Padding(
+                padding: EdgeInsets.only(top: 8),
                 child: Skeletonizer.zone(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: EdgeInsets.symmetric(vertical: 8),
                     child: ListTile(
                       leading: Bone.square(
                         size: 56,
@@ -237,7 +237,7 @@ class _RestaurantDetailScreenState
                       title: Bone.multiText(
                         lines: 3,
                       ),
-                      subtitle: const Row(
+                      subtitle: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Bone.button(
@@ -259,11 +259,11 @@ class _RestaurantDetailScreenState
 
   SliverPadding _buildLabel({required String text}) {
     return SliverPadding(
-      padding: EdgeInsets.only(top: 30, left: 16, bottom: 16),
+      padding: const EdgeInsets.only(top: 30, left: 16, bottom: 16),
       sliver: SliverToBoxAdapter(
         child: Text(
           text,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
       ),
     );
@@ -271,7 +271,7 @@ class _RestaurantDetailScreenState
 
   SliverPadding _buildProducts({required RestaurantDetailModel restaurant}) {
     return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
