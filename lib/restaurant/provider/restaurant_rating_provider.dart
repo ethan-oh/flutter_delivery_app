@@ -5,12 +5,12 @@ import 'package:delivery_flutter_app/restaurant/repository/restaurant_rating_rep
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final restaurantRatingProvider = StateNotifierProvider.family<
-    RestaurantRatingStateNotifier, CursorPaginationBase, String>((ref, rid) {
+    RestaurantRatingProvider, CursorPaginationBase, String>((ref, rid) {
   final repository = ref.watch(restaurantRatingRepositoryProvider(rid));
-  return RestaurantRatingStateNotifier(repository: repository);
+  return RestaurantRatingProvider(repository: repository);
 });
 
-class RestaurantRatingStateNotifier
+class RestaurantRatingProvider
     extends PaginationProvider<RatingModel, RestaurantRatingRepository> {
-  RestaurantRatingStateNotifier({required super.repository});
+  RestaurantRatingProvider({required super.repository});
 }

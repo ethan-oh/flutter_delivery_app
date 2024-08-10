@@ -19,17 +19,17 @@ final restaurantDetailProvider =
 });
 
 final restaurantProvider =
-    StateNotifierProvider<RestaurantStateNotifier, CursorPaginationBase>(
+    StateNotifierProvider<RestaurantProvider, CursorPaginationBase>(
   (ref) {
     final repository = ref.watch(restaurantRepositoryProvider);
-    final notifier = RestaurantStateNotifier(repository: repository);
+    final notifier = RestaurantProvider(repository: repository);
     return notifier;
   },
 );
 
-class RestaurantStateNotifier
+class RestaurantProvider
     extends PaginationProvider<RestaurantModel, RestaurantRepository> {
-  RestaurantStateNotifier({required super.repository});
+  RestaurantProvider({required super.repository});
 
   getDetail({required String id}) async {
     // 아직 데이터가 하나도 없는 상태라면 (CursorPagination이 아니라면)

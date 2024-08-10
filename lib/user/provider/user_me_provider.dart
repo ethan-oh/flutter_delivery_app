@@ -8,24 +8,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-final userMeProvider =
-    StateNotifierProvider<UserMeStateNotifier, UserModelBase?>(
+final userMeProvider = StateNotifierProvider<UserMeProvider, UserModelBase?>(
   (ref) {
     final authRepository = ref.watch(authRepositoryProvider);
     final repository = ref.watch(userMeRepositoryProvider);
     final storage = ref.watch(secureStorageProvider);
-    return UserMeStateNotifier(
+    return UserMeProvider(
         authRepository: authRepository,
         repository: repository,
         storage: storage);
   },
 );
 
-class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
+class UserMeProvider extends StateNotifier<UserModelBase?> {
   final UserMeRepository repository;
   final AuthRepository authRepository;
   final FlutterSecureStorage storage;
-  UserMeStateNotifier({
+  UserMeProvider({
     required this.storage,
     required this.repository,
     required this.authRepository,

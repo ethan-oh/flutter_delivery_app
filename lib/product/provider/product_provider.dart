@@ -5,14 +5,14 @@ import 'package:delivery_flutter_app/product/repository/product_repository.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final productProvider =
-    StateNotifierProvider<ProductStateNotifier, CursorPaginationBase>(
+    StateNotifierProvider<ProductProvider, CursorPaginationBase>(
   (ref) {
     final repository = ref.watch(productRepositoryProvider);
-    return ProductStateNotifier(repository: repository);
+    return ProductProvider(repository: repository);
   },
 );
 
-class ProductStateNotifier
+class ProductProvider
     extends PaginationProvider<ProductModel, ProductRepository> {
-  ProductStateNotifier({required super.repository});
+  ProductProvider({required super.repository});
 }
