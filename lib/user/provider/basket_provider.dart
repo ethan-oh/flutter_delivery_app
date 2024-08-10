@@ -1,3 +1,4 @@
+import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:delivery_flutter_app/product/product_model.dart';
 import 'package:delivery_flutter_app/user/model/basket_item_model.dart';
 import 'package:delivery_flutter_app/user/model/patch_basket_body.dart';
@@ -15,8 +16,13 @@ final basketProvider =
 
 class BasketProvider extends StateNotifier<List<BasketItemModel>> {
   final UserMeRepository repository;
+  final patchBasketDebounce = Debouncer(const Duration(seconds: 1),
+      initialValue: null, checkEquality: false);
   BasketProvider({required this.repository}) : super([]) {
     getBasket();
+    patchBasketDebounce.values.listen(
+      (event) => patchBasket(),
+    );
   }
 
   int get totalPrice => state.fold(
@@ -71,7 +77,7 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
     }
 
     try {
-      await patchBasket();
+      patchBasketDebounce.setValue(null);
     } catch (e) {
       state = oldState;
     }
@@ -94,7 +100,7 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
     }
 
     try {
-      await patchBasket();
+      patchBasketDebounce.setValue(null);
     } catch (e) {
       state = oldState;
     }
