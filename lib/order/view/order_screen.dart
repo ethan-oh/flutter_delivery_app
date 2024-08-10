@@ -11,6 +11,7 @@ class OrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return PaginationListView<OrderModel>(
       provider: orderProvider,
+      emptyText: '주문 목록이 없습니다.',
       separatorBuilder: (context, index) => const Divider(height: 30),
       itemBuilder: (context, index, model) => OrderCard.fromModel(model: model),
     );

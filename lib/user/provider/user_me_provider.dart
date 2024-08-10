@@ -54,8 +54,6 @@ class UserMeProvider extends StateNotifier<UserModelBase?> {
     state = UserModelLoading();
 
     try {
-      debugPrint(username);
-      debugPrint(password);
       final resp =
           await authRepository.login(username: username, password: password);
       await storage.write(key: REFRESH_TOKEN_KEY, value: resp.refreshToken);

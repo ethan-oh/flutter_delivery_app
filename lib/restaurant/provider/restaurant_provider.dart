@@ -55,7 +55,6 @@ class RestaurantProvider
           (element) => element.id == id,
         )
         .isEmpty) {
-      debugPrint('데이터 추가');
       state = pState.copyWith(
         data: <RestaurantModel>[
           ...pState.data,

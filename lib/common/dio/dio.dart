@@ -84,7 +84,6 @@ class CustomInterceptor extends Interceptor {
             },
           ),
         );
-        debugPrint('토큰 갱신');
         final accessToken = resp.data['accessToken'];
         final options = err.requestOptions;
 
@@ -95,7 +94,7 @@ class CustomInterceptor extends Interceptor {
         // 기존 요청 재전송
         final response = await dio.fetch(options);
         // 해결 되었음을 알려줌
-        debugPrint('재요청 성공');
+        debugPrint('토큰 갱신 및 재요청 성공');
         return handler.resolve(response);
       } on DioException catch (e) {
         // userMeProvider와 dioProvider가 서로 참조하는

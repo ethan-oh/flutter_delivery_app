@@ -16,6 +16,7 @@ class PaginationListView<T extends IModelWithId>
   final PaginationItemBuilder<T> itemBuilder;
   final Widget Function(BuildContext context, int index)? separatorBuilder;
   final Widget? lastWidget;
+  final String emptyText;
 
   const PaginationListView({
     super.key,
@@ -23,6 +24,7 @@ class PaginationListView<T extends IModelWithId>
     required this.itemBuilder,
     this.separatorBuilder,
     this.lastWidget,
+    this.emptyText = '데이터가 없습니다.',
   });
 
   @override
@@ -85,27 +87,31 @@ class _PaginationListViewState<T extends IModelWithId>
       onRefresh: () async {
         ref.read(widget.provider.notifier).paginate(forceRefetch: true);
       },
-      child: ListView.separated(
-        physics: const AlwaysScrollableScrollPhysics(),
-        controller: controller,
-        itemCount: state.data.length + 1,
-        separatorBuilder:
-            widget.separatorBuilder ?? (context, index) => const Divider(),
-        itemBuilder: (context, index) {
-          if (index == state.data.length) {
-            return Center(
-              child: state is CursorPaginationFetchingMore
-                  ? const CircularProgressIndicator()
-                  : widget.lastWidget ?? const SizedBox.shrink(),
-            );
-          }
-          final model = state.data[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: widget.itemBuilder(context, index, model),
-          );
-        },
-      ),
+      child: state.data.isEmpty
+          ? Center(
+              child: Text(widget.emptyText),
+            )
+          : ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              controller: controller,
+              itemCount: state.data.length + 1,
+              separatorBuilder: widget.separatorBuilder ??
+                  (context, index) => const Divider(),
+              itemBuilder: (context, index) {
+                if (index == state.data.length) {
+                  return Center(
+                    child: state is CursorPaginationFetchingMore
+                        ? const CircularProgressIndicator()
+                        : widget.lastWidget ?? const SizedBox.shrink(),
+                  );
+                }
+                final model = state.data[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: widget.itemBuilder(context, index, model),
+                );
+              },
+            ),
     );
   }
 }
