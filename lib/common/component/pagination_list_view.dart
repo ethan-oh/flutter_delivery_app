@@ -14,11 +14,15 @@ class PaginationListView<T extends IModelWithId>
       provider;
 
   final PaginationItemBuilder<T> itemBuilder;
+  final Widget Function(BuildContext context, int index)? separatorBuilder;
+  final Widget? lastWidget;
 
   const PaginationListView({
     super.key,
     required this.provider,
     required this.itemBuilder,
+    this.separatorBuilder,
+    this.lastWidget,
   });
 
   @override
@@ -85,18 +89,14 @@ class _PaginationListViewState<T extends IModelWithId>
         physics: const AlwaysScrollableScrollPhysics(),
         controller: controller,
         itemCount: state.data.length + 1,
-        separatorBuilder: (context, index) => const Divider(
-          height: 30,
-        ),
+        separatorBuilder:
+            widget.separatorBuilder ?? (context, index) => const Divider(),
         itemBuilder: (context, index) {
           if (index == state.data.length) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Center(
-                child: state is CursorPaginationFetchingMore
-                    ? const CircularProgressIndicator()
-                    : const SizedBox.shrink(),
-              ),
+            return Center(
+              child: state is CursorPaginationFetchingMore
+                  ? const CircularProgressIndicator()
+                  : widget.lastWidget ?? const SizedBox.shrink(),
             );
           }
           final model = state.data[index];

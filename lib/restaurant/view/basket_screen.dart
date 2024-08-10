@@ -73,13 +73,9 @@ class BasketScreen extends ConsumerWidget {
                           final resp = await ref
                               .read(orderProvider.notifier)
                               .postOrder();
-
                           if (resp) {
                             context.goNamed(OrderDoneScreen.routeName);
                             ref.read(basketProvider.notifier).clearBasket();
-                            await ref
-                                .read(orderProvider.notifier)
-                                .paginate(forceRefetch: true);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('결제 실패')));

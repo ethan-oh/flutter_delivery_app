@@ -65,7 +65,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.flood_outlined,
+              Icons.restaurant_outlined,
             ),
             label: '음식',
           ),

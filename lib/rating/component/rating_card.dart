@@ -1,5 +1,6 @@
 import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/rating/model/rating_model.dart';
+import 'package:delivery_flutter_app/rating/screen/images_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 // ignore: depend_on_referenced_packages
@@ -7,6 +8,7 @@ import 'package:collection/collection.dart';
 import 'dart:math' as math;
 
 class RatingCard extends StatelessWidget {
+  final String id;
   final ImageProvider avartarImage;
   final List<Image> images;
   final int rating;
@@ -15,6 +17,7 @@ class RatingCard extends StatelessWidget {
 
   const RatingCard(
       {super.key,
+      required this.id,
       required this.avartarImage,
       required this.images,
       required this.rating,
@@ -23,6 +26,7 @@ class RatingCard extends StatelessWidget {
 
   factory RatingCard.fromModel({required RatingModel model}) {
     return RatingCard(
+        id: model.id,
         avartarImage: NetworkImage(model.user.imageUrl),
         images: model.imgUrls.map((e) => Image.network(e)).toList(),
         rating: model.rating,
@@ -51,7 +55,7 @@ class RatingCard extends StatelessWidget {
             child: _Body(content: content),
           ),
           const SizedBox(height: 8),
-          _Images(images: images),
+          _Images(id: id, images: images),
         ],
       ),
     );
@@ -146,9 +150,10 @@ class _Body extends StatelessWidget {
 }
 
 class _Images extends StatelessWidget {
+  final String id;
   final List<Image> images;
 
-  const _Images({required this.images});
+  const _Images({required this.id, required this.images});
 
   @override
   Widget build(BuildContext context) {
@@ -160,9 +165,18 @@ class _Images extends StatelessWidget {
             .mapIndexed(
               (index, element) => Padding(
                 padding: EdgeInsets.only(left: index == 0 ? 16 : 0, right: 16),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: element,
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) =>
+                          ImagesScreen(images: images, initialIndex: index),
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: element,
+                  ),
                 ),
               ),
             )

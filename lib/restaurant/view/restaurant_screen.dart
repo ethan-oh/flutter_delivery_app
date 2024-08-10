@@ -13,6 +13,7 @@ class RestaurantScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return PaginationListView<RestaurantModel>(
       provider: restaurantProvider,
+      separatorBuilder: (context, index) => const Divider(height: 32),
       itemBuilder: (context, index, model) => InkWell(
         onTap: () {
           context.goNamed(RestaurantDetailScreen.routeName,

@@ -14,6 +14,7 @@ import 'package:delivery_flutter_app/restaurant/provider/restaurant_rating_provi
 import 'package:delivery_flutter_app/restaurant/view/basket_screen.dart';
 import 'package:delivery_flutter_app/user/model/basket_item_model.dart';
 import 'package:delivery_flutter_app/user/provider/basket_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -133,7 +134,7 @@ class _RestaurantDetailScreenState
                     fontSize: 10),
               ),
               child: const Icon(
-                Icons.shopping_basket_outlined,
+                CupertinoIcons.shopping_cart,
                 size: 28,
               ),
             ),
