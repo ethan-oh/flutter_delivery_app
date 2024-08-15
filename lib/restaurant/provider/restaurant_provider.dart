@@ -44,29 +44,32 @@ class RestaurantProvider
     }
 
     final pState = state as CursorPagination;
+    try {
+      final resp = await repository.getRestaurantDetail(id: id);
 
-    final resp = await repository.getRestaurantDetail(id: id);
-
-    // 레스토랑 리스트(state)에서 입력받은 id와 일치하는 레스토랑을 찾아서
-    // 해당 데이터를 기존에서 최신으로 변경한다.
-    // 즉 이미 detail 요청한 restaurant의 detail 정보가 캐싱된다.
-    if (pState.data
-        .where(
-          (element) => element.id == id,
-        )
-        .isEmpty) {
-      state = pState.copyWith(
-        data: <RestaurantModel>[
-          ...pState.data,
-          resp,
-        ],
-      );
-    } else {
-      state = pState.copyWith(
-        data: pState.data
-            .map<RestaurantModel>((e) => e.id == id ? resp : e)
-            .toList(),
-      );
+      // 레스토랑 리스트(state)에서 입력받은 id와 일치하는 레스토랑을 찾아서
+      // 해당 데이터를 기존에서 최신으로 변경한다.
+      // 즉 이미 detail 요청한 restaurant의 detail 정보가 캐싱된다.
+      if (pState.data
+          .where(
+            (element) => element.id == id,
+          )
+          .isEmpty) {
+        state = pState.copyWith(
+          data: <RestaurantModel>[
+            ...pState.data,
+            resp,
+          ],
+        );
+      } else {
+        state = pState.copyWith(
+          data: pState.data
+              .map<RestaurantModel>((e) => e.id == id ? resp : e)
+              .toList(),
+        );
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 }

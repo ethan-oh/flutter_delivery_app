@@ -1,6 +1,7 @@
 import 'package:delivery_flutter_app/common/const/data.dart';
 import 'package:delivery_flutter_app/common/storage/secure_storage.dart';
 import 'package:delivery_flutter_app/user/provider/auth_provider.dart';
+import 'package:delivery_flutter_app/user/provider/user_me_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,7 +76,7 @@ class CustomInterceptor extends Interceptor {
 
     if (isStatus401 && !isPathRefresh) {
       try {
-        final dio = Dio()..interceptors;
+        final dio = Dio();
         final resp = await dio.post(
           'http://$ip/auth/token',
           options: Options(

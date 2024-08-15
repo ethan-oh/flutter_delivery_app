@@ -7,6 +7,7 @@ class OrderCard extends StatelessWidget {
   final DateTime orderDate;
   final Image image;
   final String name;
+  final String productsSummary;
   final String productsDetail;
   final int price;
 
@@ -14,6 +15,7 @@ class OrderCard extends StatelessWidget {
     required this.orderDate,
     required this.image,
     required this.name,
+    required this.productsSummary,
     required this.productsDetail,
     required this.price,
     super.key,
@@ -22,9 +24,15 @@ class OrderCard extends StatelessWidget {
   factory OrderCard.fromModel({
     required OrderModel model,
   }) {
-    final productsDetail = model.products.length < 2
+    final productsSummary = model.products.length < 2
         ? model.products.first.product.name
         : '${model.products.first.product.name} 외 ${model.products.length - 1}개';
+
+    final productsDetail = model.products
+        .map((e) =>
+            '${e.product.name} ${e.count}개 ${e.product.price * e.count}원 ')
+        .toList()
+        .join('\n');
 
     return OrderCard(
       orderDate: model.createdAt,
@@ -35,8 +43,9 @@ class OrderCard extends StatelessWidget {
         fit: BoxFit.cover,
       ),
       name: model.restaurant.name,
-      productsDetail: productsDetail,
+      productsSummary: productsSummary,
       price: model.totalPrice,
+      productsDetail: productsDetail,
     );
   }
 
@@ -45,38 +54,47 @@ class OrderCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-            // 2022.09.01
-            // 2022.9.1
-            '${orderDate.year}.${orderDate.month.toString().padLeft(2, '0')}.${orderDate.day.toString().padLeft(2, '0')} 주문완료'),
-        const SizedBox(height: 8.0),
-        Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
-              child: image,
-            ),
-            const SizedBox(width: 16.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Text.rich(
+            TextSpan(
               children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                  ),
+                TextSpan(
+                  text: '${DataUtils.dateTimeToString(orderDate)} ',
                 ),
-                Text(
-                  '$productsDetail ${DataUtils.intToPriceString(price)}',
-                  style: const TextStyle(
-                    color: BODY_TEXT_COLOR,
-                    fontWeight: FontWeight.w300,
-                  ),
-                )
+                const TextSpan(
+                  text: '주문완료',
+                  style: TextStyle(
+                      color: PRIMARY_COLOR, fontWeight: FontWeight.w500),
+                ),
               ],
             ),
+          ),
+        ),
+        ExpansionTile(
+          initiallyExpanded: false,
+          shape: const Border(),
+          leading: ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
+            child: image,
+          ),
+          title: Text(
+            name,
+            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+          ),
+          subtitle: Text(
+            '$productsSummary ${DataUtils.intToPriceString(price)}',
+            style: const TextStyle(
+              color: BODY_TEXT_COLOR,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+          childrenPadding: const EdgeInsets.symmetric(horizontal: 16),
+          children: [
+            Text(productsDetail),
           ],
-        )
+        ),
       ],
     );
   }

@@ -41,7 +41,7 @@ class OrderProvider extends PaginationProvider<OrderModel, OrderRepository> {
       );
       return true;
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint('주문 갱신 에러 :$e');
       return false;
     }
   }

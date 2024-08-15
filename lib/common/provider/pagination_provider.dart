@@ -5,6 +5,8 @@ import 'package:delivery_flutter_app/common/repository/base_pagination_repositor
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// 커서 기반 pagination은 id를 커서로 삼은 로직이기 때문에 id가 없는 모델은 사용될 수 없다.
+// 따라서 id를 필수로 하는 인터페이스를 implement하여 타입 강제성을 부여한다.
 class PaginationProvider<T extends IModelWithId,
         U extends IBasePaginationRepository<T>>
     extends StateNotifier<CursorPaginationBase> {
@@ -98,7 +100,7 @@ class PaginationProvider<T extends IModelWithId,
         return;
       }
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint('페이지네이션 에러 : $e');
       state = CursorPaginationError(message: '데이터를 불러오는 데 실패했습니다.');
       return;
     }

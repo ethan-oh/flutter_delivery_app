@@ -16,7 +16,8 @@ final authProvider = ChangeNotifierProvider<AuthProvider>(
   },
 );
 
-// gorouter의 refreshListenable 사용을 위해 userMeProvider를 관찰하는 ChangeNotifier가 필요
+// gorouter의 refreshListenable 사용을 위해 userMeProvider를 관찰하는 ChangeNotifier가 필요.
+// refreshListenable는 ChangeNotifier 타입을 필요로 한다.
 class AuthProvider extends ChangeNotifier {
   // final AuthRepository repository;
   final Ref ref;
