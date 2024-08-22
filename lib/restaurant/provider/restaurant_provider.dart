@@ -2,7 +2,7 @@ import 'package:delivery_flutter_app/common/model/cursor_pagination_model.dart';
 import 'package:delivery_flutter_app/common/provider/pagination_provider.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
 import 'package:delivery_flutter_app/restaurant/repository/restaurant_repository.dart';
-import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
@@ -68,8 +68,11 @@ class RestaurantProvider
               .toList(),
         );
       }
-    } catch (e) {
-      debugPrint(e.toString());
+    } on DioException catch (e) {
+      if (e.response!.statusCode == 401) {
+        state = CursorPaginationError(message: '리프레시 만료');
+      }
+      state = CursorPaginationError(message: e.toString());
     }
   }
 }

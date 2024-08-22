@@ -1,5 +1,6 @@
 import 'package:delivery_flutter_app/common/view/root_tab.dart';
 import 'package:delivery_flutter_app/common/view/splash_screen.dart';
+import 'package:delivery_flutter_app/main.dart';
 import 'package:delivery_flutter_app/order/view/order_done_screen.dart';
 import 'package:delivery_flutter_app/restaurant/view/basket_screen.dart';
 import 'package:delivery_flutter_app/restaurant/view/restaurant_detail_screen.dart';
@@ -104,6 +105,7 @@ class AuthProvider extends ChangeNotifier {
     return null;
   }
 
+  // for dio interceptor
   logout() {
     ref.read(userMeProvider.notifier).logout();
   }

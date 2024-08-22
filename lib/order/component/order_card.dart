@@ -30,7 +30,7 @@ class OrderCard extends StatelessWidget {
 
     final productsDetail = model.products
         .map((e) =>
-            '${e.product.name} ${e.count}개 ${e.product.price * e.count}원 ')
+            '${e.product.name} ${e.count}개  ${DataUtils.intToPriceString(e.product.price * e.count)}')
         .toList()
         .join('\n');
 
@@ -60,12 +60,12 @@ class OrderCard extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: '${DataUtils.dateTimeToString(orderDate)} ',
+                  text: '${DataUtils.dateTimeToFormattedString(orderDate)} ',
                 ),
                 const TextSpan(
                   text: '주문완료',
                   style: TextStyle(
-                      color: PRIMARY_COLOR, fontWeight: FontWeight.w500),
+                      color: PRIMARY_COLOR, fontWeight: FontWeight.w700),
                 ),
               ],
             ),
