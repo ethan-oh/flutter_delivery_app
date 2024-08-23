@@ -31,7 +31,7 @@ class OrderDoneScreen extends ConsumerWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32.0),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 context.goNamed(RootTab.routeName);
                 ref.read(orderProvider.notifier).paginate(forceRefetch: true);

@@ -118,7 +118,7 @@ class ProductCard extends ConsumerWidget {
             padding: const EdgeInsets.only(top: 16),
             child: Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.tertiary,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(

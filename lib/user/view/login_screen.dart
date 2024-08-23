@@ -1,5 +1,6 @@
 import 'package:delivery_flutter_app/common/component/custom_text_form_field.dart';
 import 'package:delivery_flutter_app/common/const/colors.dart';
+import 'package:delivery_flutter_app/common/extension/build_context_extension.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:delivery_flutter_app/common/utils/validate_utils.dart';
 import 'package:delivery_flutter_app/user/model/user_model.dart';
@@ -75,12 +76,7 @@ class LoginScreen extends ConsumerWidget {
                                   .then(
                                 (value) {
                                   if (value is! UserModelError) return;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(value.message),
-                                      duration: const Duration(seconds: 1),
-                                    ),
-                                  );
+                                  context.showErrorSnackBar(value.message);
                                 },
                               );
                             }

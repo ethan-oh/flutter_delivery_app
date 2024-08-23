@@ -1,4 +1,5 @@
 import 'package:delivery_flutter_app/common/const/colors.dart';
+import 'package:delivery_flutter_app/common/extension/build_context_extension.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:delivery_flutter_app/common/utils/data_utils.dart';
 import 'package:delivery_flutter_app/order/provider/order_provider.dart';
@@ -74,17 +75,7 @@ class BasketScreen extends ConsumerWidget {
                       style: FilledButton.styleFrom(
                           backgroundColor:
                               Theme.of(context).colorScheme.secondary),
-                      onPressed: () async {
-                        final resp =
-                            await ref.read(orderProvider.notifier).postOrder();
-                        if (resp) {
-                          context.goNamed(OrderDoneScreen.routeName);
-                          ref.read(basketProvider.notifier).clearBasket();
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('결제 실패')));
-                        }
-                      },
+                      onPressed: () => _showPaymentDialog(context, ref),
                       child: const Text('결제하기'),
                     ),
                   ],
@@ -116,5 +107,23 @@ class BasketScreen extends ConsumerWidget {
                   ),
               itemCount: basket.length),
     );
+  }
+
+  void _showPaymentDialog(BuildContext context, WidgetRef ref) {
+    context.showConfirmationDialog(
+      title: '알림',
+      content: '결제하시겠습니까?',
+      onConfirm: () => _processPayment(context, ref),
+    );
+  }
+
+  Future<void> _processPayment(BuildContext context, WidgetRef ref) async {
+    final resp = await ref.read(orderProvider.notifier).postOrder();
+    if (resp) {
+      context.goNamed(OrderDoneScreen.routeName);
+      ref.read(basketProvider.notifier).clearBasket();
+    } else {
+      context.showErrorSnackBar('결제 실패');
+    }
   }
 }
