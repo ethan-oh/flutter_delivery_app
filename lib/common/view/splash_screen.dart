@@ -1,4 +1,3 @@
-import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +8,17 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
         child: Center(
-          child: Image.asset(
-            'asset/img/logo/my_logo.png',
-            width: MediaQuery.of(context).size.width * 0.85,
+          child: ColorFiltered(
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.primary,
+              BlendMode.modulate,
+            ),
+            child: Image.asset(
+              'asset/img/logo/my_logo.png',
+              width: MediaQuery.of(context).size.width * 0.85,
+            ),
           ),
         ));
   }

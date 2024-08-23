@@ -1,3 +1,4 @@
+import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -35,13 +36,11 @@ class _ImagesScreenState extends State<ImagesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${currentIndex + 1}/${widget.images.length}'),
-        backgroundColor: Colors.black,
-      ),
+    return DefaultLayout(
+      title: '${currentIndex + 1}/${widget.images.length}',
       backgroundColor: Colors.black,
-      body: SafeArea(
+      foregroundColor: Colors.white,
+      child: SafeArea(
         child: PhotoViewGallery.builder(
           itemCount: widget.images.length,
           pageController: _pageController,
@@ -54,7 +53,8 @@ class _ImagesScreenState extends State<ImagesScreen> {
             return PhotoViewGalleryPageOptions(
               imageProvider: widget.images[index].image,
               minScale: PhotoViewComputedScale.contained,
-              maxScale: PhotoViewComputedScale.covered * 2,
+              maxScale: PhotoViewComputedScale.covered * 3,
+              filterQuality: FilterQuality.high,
             );
           },
           scrollPhysics: const BouncingScrollPhysics(),

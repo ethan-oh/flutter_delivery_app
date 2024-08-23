@@ -1,4 +1,4 @@
-import 'package:delivery_flutter_app/common/const/colors.dart';
+import 'package:delivery_flutter_app/common/component/basket_icon_button.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:delivery_flutter_app/order/view/order_screen.dart';
 import 'package:delivery_flutter_app/product/view/product_screen.dart';
@@ -41,41 +41,34 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: 'Ethan\'s 딜리버리',
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: index,
-        selectedItemColor: PRIMARY_COLOR,
-        unselectedItemColor: BODY_TEXT_COLOR,
-        selectedIconTheme: const IconThemeData(size: 30),
-        selectedLabelStyle: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: const TextStyle(
-          fontSize: 10,
-          fontWeight: FontWeight.w500,
-        ),
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) => controller.animateTo(index),
-        items: const [
-          BottomNavigationBarItem(
+      actions: const [
+        BasketIconButton(),
+        SizedBox(width: 10),
+      ],
+      bottomNavigationBar: NavigationBar(
+        height: 70,
+        selectedIndex: index,
+        onDestinationSelected: (index) => controller.animateTo(index),
+        destinations: const [
+          NavigationDestination(
             icon: Icon(
               Icons.home_outlined,
             ),
             label: '홈',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(
               Icons.restaurant_outlined,
             ),
             label: '음식',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(
               Icons.receipt_long_outlined,
             ),
             label: '주문',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(
               Icons.person_outline,
             ),

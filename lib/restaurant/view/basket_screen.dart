@@ -27,6 +27,7 @@ class BasketScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,6 +41,7 @@ class BasketScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -52,6 +54,7 @@ class BasketScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -66,23 +69,23 @@ class BasketScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      width: double.maxFinite,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          final resp = await ref
-                              .read(orderProvider.notifier)
-                              .postOrder();
-                          if (resp) {
-                            context.goNamed(OrderDoneScreen.routeName);
-                            ref.read(basketProvider.notifier).clearBasket();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('결제 실패')));
-                          }
-                        },
-                        child: const Text('결제하기'),
-                      ),
+                    const SizedBox(height: 5),
+                    FilledButton(
+                      style: FilledButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary),
+                      onPressed: () async {
+                        final resp =
+                            await ref.read(orderProvider.notifier).postOrder();
+                        if (resp) {
+                          context.goNamed(OrderDoneScreen.routeName);
+                          ref.read(basketProvider.notifier).clearBasket();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('결제 실패')));
+                        }
+                      },
+                      child: const Text('결제하기'),
                     ),
                   ],
                 ),

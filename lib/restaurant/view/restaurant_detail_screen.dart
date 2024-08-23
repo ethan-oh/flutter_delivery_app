@@ -1,4 +1,4 @@
-import 'package:delivery_flutter_app/common/const/colors.dart';
+import 'package:delivery_flutter_app/common/component/basket_icon_button.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:delivery_flutter_app/common/model/cursor_pagination_model.dart';
 import 'package:delivery_flutter_app/common/utils/pagination_utils.dart';
@@ -11,15 +11,11 @@ import 'package:delivery_flutter_app/restaurant/model/restaurant_detail_model.da
 import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
 import 'package:delivery_flutter_app/restaurant/provider/restaurant_provider.dart';
 import 'package:delivery_flutter_app/restaurant/provider/restaurant_rating_provider.dart';
-import 'package:delivery_flutter_app/restaurant/view/basket_screen.dart';
 import 'package:delivery_flutter_app/user/model/basket_item_model.dart';
 import 'package:delivery_flutter_app/user/provider/basket_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:badges/badges.dart' as badges;
 
 final class RestaurantDetailScreen extends ConsumerStatefulWidget {
   static String get routeName => 'detail';
@@ -79,7 +75,19 @@ class _RestaurantDetailScreenState
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary,
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.fromLTRB(5, 8, 11, 8),
+          child: BasketIconButton(
+            isFloatingActionButton: true,
+          ),
+        ),
+      ),
       body: CustomScrollView(
         controller: controller,
         slivers: [
@@ -112,43 +120,25 @@ class _RestaurantDetailScreenState
       pinned: true,
       stretch: true,
       floating: false,
-      actions: [
-        Container(
-          padding: const EdgeInsets.only(right: 16),
-          child: IconButton(
-            onPressed: () => context.pushNamed(BasketScreen.routeName),
-            icon: badges.Badge(
-              showBadge: basket.isNotEmpty,
-              position: badges.BadgePosition.bottomEnd(),
-              badgeStyle: const badges.BadgeStyle(badgeColor: Colors.white),
-              badgeContent: Text(
-                basket
-                    .fold(
-                        0,
-                        (previousValue, element) =>
-                            previousValue + element.count)
-                    .toString(),
-                style: const TextStyle(
-                    color: PRIMARY_COLOR,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 10),
-              ),
-              child: const Icon(
-                CupertinoIcons.shopping_cart,
-                size: 28,
-              ),
-            ),
-          ),
-        ),
-      ],
+      foregroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.onSecondaryFixedVariant,
       elevation: 0,
       expandedHeight: 200,
-      backgroundColor: PRIMARY_COLOR,
-      foregroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           state.name,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(
+            shadows: [
+              Shadow(
+                offset: const Offset(1, 1),
+                blurRadius: 30,
+                color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
+              ),
+            ],
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Colors.white, // 텍스트 색상
+          ),
         ),
         stretchModes: const [StretchMode.zoomBackground],
         background: Stack(
@@ -161,12 +151,12 @@ class _RestaurantDetailScreenState
             Positioned(
               left: 0,
               right: 0,
-              height: 120,
+              height: 160,
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.black.withOpacity(0.7),
+                      Colors.black.withOpacity(0.8),
                       Colors.transparent,
                     ],
                     begin: Alignment.topCenter,
@@ -183,7 +173,7 @@ class _RestaurantDetailScreenState
 
   SliverPadding _buildRatings({required CursorPaginationBase ratingsState}) {
     return SliverPadding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: 16, left: 8, right: 8),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -201,8 +191,11 @@ class _RestaurantDetailScreenState
                 ),
               );
             }
-            return RatingCard.fromModel(
-              model: ratingsState.data[index],
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: RatingCard.fromModel(
+                model: ratingsState.data[index],
+              ),
             );
           },
           childCount: (ratingsState as CursorPagination).data.length + 1,

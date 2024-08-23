@@ -1,4 +1,3 @@
-import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/rating/model/rating_model.dart';
 import 'package:delivery_flutter_app/rating/screen/images_screen.dart';
 import 'package:flutter/material.dart';
@@ -36,27 +35,36 @@ class RatingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 32),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: _Header(
-              avartarImage: avartarImage,
-              rating: rating,
-              email: email,
+    return Card(
+      borderOnForeground: false,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      elevation: 0,
+      // 카드 배경색
+      color: Theme.of(context).colorScheme.surfaceContainerHigh,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: _Header(
+                avartarImage: avartarImage,
+                rating: rating,
+                email: email,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: _Body(content: content),
-          ),
-          const SizedBox(height: 8),
-          _Images(id: id, images: images),
-        ],
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: _Body(content: content),
+            ),
+            const SizedBox(height: 8),
+            _Images(id: id, images: images),
+          ],
+        ),
       ),
     );
   }
@@ -110,9 +118,9 @@ class _HeaderState extends State<_Header> {
           child: Text(
             widget.email,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 14,
-              color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -122,7 +130,7 @@ class _HeaderState extends State<_Header> {
           (index) {
             return Icon(
               index < widget.rating ? Icons.star : Icons.star_border_outlined,
-              color: PRIMARY_COLOR,
+              color: Theme.of(context).colorScheme.primary,
             );
           },
         ),
@@ -141,9 +149,9 @@ class _Body extends StatelessWidget {
       content,
       trimMode: TrimMode.Line,
       trimLines: 3,
-      colorClickableText: Colors.grey,
+      colorClickableText: Theme.of(context).colorScheme.tertiary,
       trimCollapsedText: '더보기',
-      trimExpandedText: ' 간략히',
+      trimExpandedText: '  간략히',
       textAlign: TextAlign.start,
     );
   }
@@ -166,18 +174,26 @@ class _Images extends StatelessWidget {
               (index, element) => Padding(
                 padding: EdgeInsets.only(left: index == 0 ? 16 : 0, right: 16),
                 child: GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) =>
-                          ImagesScreen(images: images, initialIndex: index),
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: element,
-                  ),
-                ),
+                    onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => ImagesScreen(
+                                images: images, initialIndex: index),
+                          ),
+                        ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          width: 0.2,
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: element,
+                      ),
+                    )),
               ),
             )
             .toList(),

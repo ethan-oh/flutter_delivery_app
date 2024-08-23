@@ -62,10 +62,12 @@ class OrderCard extends StatelessWidget {
                 TextSpan(
                   text: '${DataUtils.dateTimeToFormattedString(orderDate)} ',
                 ),
-                const TextSpan(
+                TextSpan(
                   text: '주문완료',
                   style: TextStyle(
-                      color: PRIMARY_COLOR, fontWeight: FontWeight.w700),
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),

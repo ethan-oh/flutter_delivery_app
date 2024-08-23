@@ -2,7 +2,6 @@ import 'package:delivery_flutter_app/common/model/cursor_pagination_model.dart';
 import 'package:delivery_flutter_app/common/model/model_with_id.dart';
 import 'package:delivery_flutter_app/common/provider/pagination_provider.dart';
 import 'package:delivery_flutter_app/common/utils/pagination_utils.dart';
-import 'package:delivery_flutter_app/user/provider/user_me_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

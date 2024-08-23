@@ -58,7 +58,7 @@ class LoginScreen extends ConsumerWidget {
                     },
                   ),
                   const SizedBox(height: 16.0),
-                  ElevatedButton(
+                  FilledButton(
                     onPressed: user is UserModelLoading
                         ? null
                         : () {

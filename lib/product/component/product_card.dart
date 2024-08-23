@@ -1,4 +1,3 @@
-import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/common/utils/data_utils.dart';
 import 'package:delivery_flutter_app/product/product_model.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_detail_model.dart';
@@ -95,18 +94,18 @@ class ProductCard extends ConsumerWidget {
                       detail,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: BODY_TEXT_COLOR,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
                         fontSize: 14,
                       ),
                     ),
                     Text(
                       DataUtils.intToPriceString(price),
                       textAlign: TextAlign.right,
-                      style: const TextStyle(
-                          color: PRIMARY_COLOR,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
                           fontSize: 12,
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
@@ -119,7 +118,7 @@ class ProductCard extends ConsumerWidget {
             padding: const EdgeInsets.only(top: 16),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(
@@ -164,8 +163,8 @@ class _Footer extends StatelessWidget {
           Expanded(
             child: Text(
               '총금액: ${DataUtils.intToPriceString(total)}',
-              style: const TextStyle(
-                color: PRIMARY_COLOR,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSecondary,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -173,10 +172,11 @@ class _Footer extends StatelessWidget {
           Row(
             children: [
               buildButton(
+                context,
                 icon: count != 1 ? Icons.remove : Icons.delete_outlined,
                 color: count != 1
-                    ? PRIMARY_COLOR
-                    : const Color.fromARGB(255, 207, 44, 32),
+                    ? Theme.of(context).colorScheme.onSecondary
+                    : Theme.of(context).colorScheme.errorContainer,
                 ontap: onSubtract,
               ),
               const SizedBox(
@@ -184,8 +184,8 @@ class _Footer extends StatelessWidget {
               ),
               Text(
                 count.toString(),
-                style: const TextStyle(
-                  color: PRIMARY_COLOR,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSecondary,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -193,6 +193,8 @@ class _Footer extends StatelessWidget {
                 width: 10,
               ),
               buildButton(
+                context,
+                color: Theme.of(context).colorScheme.onSecondary,
                 icon: Icons.add,
                 ontap: onAdd,
               ),
@@ -203,10 +205,11 @@ class _Footer extends StatelessWidget {
     );
   }
 
-  Widget buildButton({
+  Widget buildButton(
+    context, {
     required IconData icon,
     required VoidCallback ontap,
-    Color color = PRIMARY_COLOR,
+    required Color color,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -218,7 +221,7 @@ class _Footer extends StatelessWidget {
         onTap: ontap,
         child: Icon(
           icon,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.secondary,
           size: 20,
         ),
       ),

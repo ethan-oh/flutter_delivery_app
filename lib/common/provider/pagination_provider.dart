@@ -2,8 +2,6 @@ import 'package:delivery_flutter_app/common/model/cursor_pagination_model.dart';
 import 'package:delivery_flutter_app/common/model/model_with_id.dart';
 import 'package:delivery_flutter_app/common/model/pagination_params.dart';
 import 'package:delivery_flutter_app/common/repository/base_pagination_repository.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 커서 기반 pagination은 id를 커서로 삼은 로직이기 때문에 id가 없는 모델은 사용될 수 없다.

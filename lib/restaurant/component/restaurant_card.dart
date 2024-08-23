@@ -1,4 +1,3 @@
-import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_detail_model.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +77,9 @@ class RestaurantCard extends StatelessWidget {
               ),
               Text(
                 tags.join(' · '),
-                style: const TextStyle(color: BODY_TEXT_COLOR, fontSize: 14),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 14),
               ),
               const SizedBox(
                 height: 8.0,
@@ -141,7 +142,7 @@ class _IconText extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: PRIMARY_COLOR,
+          color: Theme.of(context).colorScheme.primary,
           size: 14.0,
         ),
         const SizedBox(
