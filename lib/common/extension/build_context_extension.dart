@@ -2,7 +2,7 @@ import 'package:delivery_flutter_app/common/component/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 
 extension BuildContextExtension on BuildContext {
-  Future<dynamic> showConfirmationDialog({
+  Future<dynamic> showConfirmDialog({
     required String title,
     required String content,
     required VoidCallback onConfirm,

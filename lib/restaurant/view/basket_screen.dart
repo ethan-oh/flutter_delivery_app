@@ -35,10 +35,9 @@ class BasketScreen extends ConsumerWidget {
                       children: [
                         const Text(
                           '총 상품 금액',
-                          style: TextStyle(color: BODY_TEXT_COLOR),
                         ),
                         Text(
-                          DataUtils.intToPriceString(basketTotalCost),
+                          basketTotalCost.toPriceString(),
                         ),
                       ],
                     ),
@@ -51,7 +50,8 @@ class BasketScreen extends ConsumerWidget {
                           style: TextStyle(color: BODY_TEXT_COLOR),
                         ),
                         Text(
-                          '+ ${DataUtils.intToPriceString(deliveryFee)}',
+                          '+ ${deliveryFee.toPriceString()}',
+                          style: const TextStyle(color: BODY_TEXT_COLOR),
                         ),
                       ],
                     ),
@@ -59,22 +59,24 @@ class BasketScreen extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           '총 결제 예상 금액',
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                         Text(
-                          DataUtils.intToPriceString(
-                              basketTotalCost + deliveryFee),
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                          (basketTotalCost + deliveryFee).toPriceString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 5),
                     FilledButton(
-                      style: FilledButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary),
                       onPressed: () => _showPaymentDialog(context, ref),
                       child: const Text('결제하기'),
                     ),
@@ -110,7 +112,7 @@ class BasketScreen extends ConsumerWidget {
   }
 
   void _showPaymentDialog(BuildContext context, WidgetRef ref) {
-    context.showConfirmationDialog(
+    context.showConfirmDialog(
       title: '알림',
       content: '결제하시겠습니까?',
       onConfirm: () => _processPayment(context, ref),

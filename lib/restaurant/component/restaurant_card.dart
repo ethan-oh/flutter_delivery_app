@@ -1,7 +1,7 @@
+import 'package:delivery_flutter_app/common/extension/string_extension.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_detail_model.dart';
 import 'package:delivery_flutter_app/restaurant/model/restaurant_model.dart';
 import 'package:flutter/material.dart';
-import 'package:readmore/readmore.dart';
 
 class RestaurantCard extends StatelessWidget {
   final Widget image; // 이미지
@@ -110,15 +110,7 @@ class RestaurantCard extends StatelessWidget {
               if (detail != null && isDetail)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: ReadMoreText(
-                    detail!,
-                    trimMode: TrimMode.Line,
-                    trimLines: 10,
-                    colorClickableText: Colors.grey,
-                    trimCollapsedText: '더보기',
-                    trimExpandedText: ' 간략히',
-                    textAlign: TextAlign.start,
-                  ),
+                  child: detail!.toReadMoreText(trimLines: 10),
                 ),
             ],
           ),

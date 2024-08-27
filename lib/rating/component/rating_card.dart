@@ -1,7 +1,7 @@
+import 'package:delivery_flutter_app/common/extension/string_extension.dart';
 import 'package:delivery_flutter_app/rating/model/rating_model.dart';
 import 'package:delivery_flutter_app/rating/screen/images_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:readmore/readmore.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'dart:math' as math;
@@ -145,15 +145,7 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReadMoreText(
-      content,
-      trimMode: TrimMode.Line,
-      trimLines: 3,
-      colorClickableText: Theme.of(context).colorScheme.tertiary,
-      trimCollapsedText: '더보기',
-      trimExpandedText: '  간략히',
-      textAlign: TextAlign.start,
-    );
+    return content.toReadMoreText();
   }
 }
 

@@ -1,3 +1,5 @@
+import 'package:delivery_flutter_app/common/component/confirm_dialog.dart';
+import 'package:delivery_flutter_app/common/extension/build_context_extension.dart';
 import 'package:delivery_flutter_app/common/provider/theme_provider.dart';
 import 'package:delivery_flutter_app/user/model/user_model.dart';
 import 'package:delivery_flutter_app/user/provider/user_me_provider.dart';
@@ -30,7 +32,20 @@ class ProfileScreen extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () {
-              ref.read(userMeProvider.notifier).logout();
+              showDialog(
+                context: context,
+                builder: (context) => ConfirmDialog(
+                  title: '알림',
+                  content: '정말 로그아웃하시겠습니까?',
+                  onConfirm: () => ref.read(userMeProvider.notifier).logout(),
+                ),
+              );
+
+              context.showConfirmDialog(
+                title: '알림',
+                content: '정말 로그아웃하시겠습니까?',
+                onConfirm: () => ref.read(userMeProvider.notifier).logout(),
+              );
             },
             child: const Text('로그아웃'),
           ),

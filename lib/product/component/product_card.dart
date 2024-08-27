@@ -100,7 +100,7 @@ class ProductCard extends ConsumerWidget {
                       ),
                     ),
                     Text(
-                      DataUtils.intToPriceString(price),
+                      price.toPriceString(),
                       textAlign: TextAlign.right,
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
@@ -118,7 +118,7 @@ class ProductCard extends ConsumerWidget {
             padding: const EdgeInsets.only(top: 16),
             child: Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.tertiary,
+                color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(
@@ -162,7 +162,7 @@ class _Footer extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              '총금액: ${DataUtils.intToPriceString(total)}',
+              '총금액: ${total.toPriceString()}',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSecondary,
                 fontWeight: FontWeight.w500,

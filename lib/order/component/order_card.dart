@@ -30,7 +30,7 @@ class OrderCard extends StatelessWidget {
 
     final productsDetail = model.products
         .map((e) =>
-            '${e.product.name} ${e.count}개  ${DataUtils.intToPriceString(e.product.price * e.count)}')
+            '${e.product.name} ${e.count}개  ${(e.product.price * e.count).toPriceString()}')
         .toList()
         .join('\n');
 
@@ -85,7 +85,7 @@ class OrderCard extends StatelessWidget {
             style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
           ),
           subtitle: Text(
-            '$productsSummary ${DataUtils.intToPriceString(price)}',
+            '$productsSummary ${price.toPriceString()}',
             style: const TextStyle(
               color: BODY_TEXT_COLOR,
               fontWeight: FontWeight.w300,

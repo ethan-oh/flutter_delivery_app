@@ -48,6 +48,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       bottomNavigationBar: NavigationBar(
         height: 70,
         selectedIndex: index,
+        indicatorColor: Theme.of(context).colorScheme.surfaceBright,
         onDestinationSelected: (index) => controller.animateTo(index),
         destinations: const [
           NavigationDestination(
