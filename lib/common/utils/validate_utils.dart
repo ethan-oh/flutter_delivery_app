@@ -1,6 +1,10 @@
 class ValidateUtils {
   // 이메일 유효성 검사 함수
-  static String? emailValidator(dynamic val) {
+  static String? emailValidator(String? val) {
+    if (val == null || val.isEmpty) {
+      return '이메일 주소를 입력해 주세요.';
+    }
+
     // 이메일 정규식
     final emailRegExp = RegExp(r'^[^@]+@[^@]+\.[^@]+');
     if (!emailRegExp.hasMatch(val)) {
@@ -11,7 +15,11 @@ class ValidateUtils {
   }
 
   // 비밀번호 유효성 검사 함수
-  static String? passwordValidator(dynamic val) {
+  static String? passwordValidator(String? val) {
+    if (val == null || val.isEmpty) {
+      return '비밀번호를 입력해 주세요.';
+    }
+
     if (val.length < 4) {
       return '비밀번호는 4자리 이상이어야 합니다.';
     }

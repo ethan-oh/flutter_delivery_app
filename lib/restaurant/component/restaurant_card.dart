@@ -70,7 +70,9 @@ class RestaurantCard extends StatelessWidget {
               Text(
                 name,
                 style: TextStyle(
-                    fontSize: isDetail ? 24 : 20, fontWeight: FontWeight.w500),
+                  fontSize: isDetail ? 24 : 20,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               const SizedBox(
                 height: 8.0,
@@ -78,12 +80,11 @@ class RestaurantCard extends StatelessWidget {
               Text(
                 tags.join(' · '),
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 14),
+                  color: Theme.of(context).colorScheme.outline,
+                  fontSize: 14,
+                ),
               ),
-              const SizedBox(
-                height: 8.0,
-              ),
+              const SizedBox(height: 8.0),
               Row(
                 children: [
                   _IconText(

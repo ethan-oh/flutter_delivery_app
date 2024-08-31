@@ -1,4 +1,3 @@
-import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/common/utils/data_utils.dart';
 import 'package:delivery_flutter_app/order/model/order_model.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ class OrderCard extends StatelessWidget {
   final String productsSummary;
   final String productsDetail;
   final int price;
+  final int productCount;
 
   const OrderCard({
     required this.orderDate,
@@ -18,6 +18,7 @@ class OrderCard extends StatelessWidget {
     required this.productsSummary,
     required this.productsDetail,
     required this.price,
+    required this.productCount,
     super.key,
   });
 
@@ -35,6 +36,7 @@ class OrderCard extends StatelessWidget {
         .join('\n');
 
     return OrderCard(
+      productCount: model.products.length,
       orderDate: model.createdAt,
       image: Image.network(
         model.restaurant.thumbUrl,
@@ -48,15 +50,18 @@ class OrderCard extends StatelessWidget {
       productsDetail: productsDetail,
     );
   }
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Text.rich(
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text.rich(
             TextSpan(
               children: [
                 TextSpan(
@@ -72,32 +77,117 @@ class OrderCard extends StatelessWidget {
               ],
             ),
           ),
-        ),
-        ExpansionTile(
-          initiallyExpanded: false,
-          shape: const Border(),
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(16.0),
-            child: image,
-          ),
-          title: Text(
-            name,
-            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
-          ),
-          subtitle: Text(
-            '$productsSummary ${price.toPriceString()}',
-            style: const TextStyle(
-              color: BODY_TEXT_COLOR,
-              fontWeight: FontWeight.w300,
+          if (productCount > 1)
+            ExpansionTile(
+              initiallyExpanded: false,
+              tilePadding: const EdgeInsets.all(0),
+              shape: const Border(),
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: image,
+              ),
+              title: Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              subtitle: Text(
+                '$productsSummary ${price.toPriceString()}',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+              expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(productsDetail),
+              ],
+            )
+          else
+            ListTile(
+              contentPadding: const EdgeInsets.all(0),
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: image,
+              ),
+              title: Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              subtitle: Text(
+                '$productsSummary ${price.toPriceString()}',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
             ),
-          ),
-          expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-          childrenPadding: const EdgeInsets.symmetric(horizontal: 16),
-          children: [
-            Text(productsDetail),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       color: Theme.of(context).colorScheme.surfaceContainerHighest,
+  //       borderRadius: BorderRadius.circular(16),
+  //     ),
+  //     padding: const EdgeInsets.all(16),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.stretch,
+  //       children: [
+  //         Text.rich(
+  //           TextSpan(
+  //             children: [
+  //               TextSpan(
+  //                 text: '${DataUtils.dateTimeToFormattedString(orderDate)} ',
+  //               ),
+  //               TextSpan(
+  //                 text: '주문완료',
+  //                 style: TextStyle(
+  //                   color: Theme.of(context).colorScheme.primary,
+  //                   fontWeight: FontWeight.w700,
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         ExpansionTile(
+  //           initiallyExpanded: false,
+  //           tilePadding: const EdgeInsets.all(0),
+  //           shape: const Border(),
+  //           leading: ClipRRect(
+  //             borderRadius: BorderRadius.circular(16.0),
+  //             child: image,
+  //           ),
+  //           title: Text(
+  //             name,
+  //             style: const TextStyle(
+  //               fontSize: 16.0,
+  //               fontWeight: FontWeight.w500,
+  //             ),
+  //           ),
+  //           subtitle: Text(
+  //             '$productsSummary ${price.toPriceString()}',
+  //             style: TextStyle(
+  //               color: Theme.of(context).colorScheme.onSurfaceVariant,
+  //               fontWeight: FontWeight.w300,
+  //             ),
+  //           ),
+  //           expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+  //           children: [
+  //             Text(productsDetail),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

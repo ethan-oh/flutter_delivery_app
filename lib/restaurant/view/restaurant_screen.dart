@@ -13,7 +13,6 @@ class RestaurantScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return PaginationListView<RestaurantModel>(
       provider: restaurantProvider,
-      separatorBuilder: (context, index) => const Divider(height: 32),
       emptyText: '레스토랑 정보가 존재하지 않습니다.',
       lastWidget: const Padding(
         padding: EdgeInsets.only(bottom: 16),

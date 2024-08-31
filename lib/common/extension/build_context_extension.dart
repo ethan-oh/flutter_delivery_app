@@ -17,9 +17,16 @@ extension BuildContextExtension on BuildContext {
     );
   }
 
-  void showErrorSnackBar(String message) {
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(this).clearSnackBars();
     ScaffoldMessenger.of(this).showSnackBar(
-      SnackBar(content: Text(message)),
+      SnackBar(
+        content: Text(message),
+        action: SnackBarAction(
+          label: '닫기',
+          onPressed: () {},
+        ),
+      ),
     );
   }
 }

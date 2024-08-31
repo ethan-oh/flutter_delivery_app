@@ -15,47 +15,70 @@ class ProfileScreen extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(user.imageUrl),
+          _buildUserCard(context, user, ref),
+          Expanded(
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: const [
+                ListTile(
+                  leading: Icon(Icons.brightness_6_outlined),
+                  title: Text('테마'),
+                  trailing: ThemeModeDropdown(),
+                ),
+              ],
             ),
-            title: Text(
-              user.username.split('@')[0],
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            subtitle: Text(user.username),
           ),
-          FilledButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => ConfirmDialog(
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserCard(BuildContext context, UserModel user, WidgetRef ref) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(user.imageUrl),
+              ),
+              title: Text(
+                user.username.split('@')[0],
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              subtitle: Text(user.username),
+            ),
+            FilledButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => ConfirmDialog(
+                    title: '알림',
+                    content: '정말 로그아웃하시겠습니까?',
+                    onConfirm: () => ref.read(userMeProvider.notifier).logout(),
+                  ),
+                );
+
+                context.showConfirmDialog(
                   title: '알림',
                   content: '정말 로그아웃하시겠습니까?',
                   onConfirm: () => ref.read(userMeProvider.notifier).logout(),
-                ),
-              );
-
-              context.showConfirmDialog(
-                title: '알림',
-                content: '정말 로그아웃하시겠습니까?',
-                onConfirm: () => ref.read(userMeProvider.notifier).logout(),
-              );
-            },
-            child: const Text('로그아웃'),
-          ),
-          const Divider(),
-          const ListTile(
-            leading: Icon(Icons.brightness_6_outlined),
-            title: Text('테마'),
-            trailing: ThemeModeDropdown(),
-          ),
-        ],
+                );
+              },
+              child: const Text('로그아웃'),
+            ),
+          ],
+        ),
       ),
     );
   }

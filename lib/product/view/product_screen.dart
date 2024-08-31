@@ -14,7 +14,6 @@ class ProductScreen extends StatelessWidget {
     return PaginationListView<ProductModel>(
       provider: productProvider,
       emptyText: '음식 정보가 존재하지 않습니다.',
-      separatorBuilder: (context, index) => const Divider(height: 32),
       itemBuilder: (context, index, model) => GestureDetector(
         onTap: () => context.goNamed(
           RestaurantDetailScreen.routeName,

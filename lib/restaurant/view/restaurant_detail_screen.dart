@@ -144,9 +144,12 @@ class _RestaurantDetailScreenState
         background: Stack(
           fit: StackFit.expand,
           children: [
-            Image.network(
-              state.thumbUrl,
-              fit: BoxFit.cover,
+            Hero(
+              tag: ObjectKey(state.id),
+              child: Image.network(
+                state.thumbUrl,
+                fit: BoxFit.cover,
+              ),
             ),
             Positioned(
               left: 0,

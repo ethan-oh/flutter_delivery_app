@@ -1,4 +1,3 @@
-import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:delivery_flutter_app/common/view/root_tab.dart';
 import 'package:delivery_flutter_app/order/provider/order_provider.dart';
@@ -22,7 +21,6 @@ class OrderDoneScreen extends ConsumerWidget {
           children: [
             const Icon(
               Icons.thumb_up_alt_outlined,
-              color: PRIMARY_COLOR,
               size: 50.0,
             ),
             const SizedBox(height: 32.0),

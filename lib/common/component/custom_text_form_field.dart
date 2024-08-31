@@ -7,7 +7,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscureText;
   final bool autofocus;
   final FormFieldSetter? onSaved;
-  final FormFieldValidator? validatior;
+  final FormFieldValidator<String>? validatior;
 
   const CustomTextFormField({
     super.key,

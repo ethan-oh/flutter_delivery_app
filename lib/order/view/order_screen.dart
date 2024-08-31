@@ -12,7 +12,11 @@ class OrderScreen extends StatelessWidget {
     return PaginationListView<OrderModel>(
       provider: orderProvider,
       emptyText: '주문 목록이 없습니다.',
-      separatorBuilder: (context, index) => const Divider(height: 30),
+      // separatorBuilder: (context, index) => const Divider(
+      //   height: 32,
+      //   thickness: 0,
+      // ),
+      separatorBuilder: (context, index) => const SizedBox(height: 16),
       itemBuilder: (context, index, model) => OrderCard.fromModel(model: model),
     );
   }

@@ -1,4 +1,3 @@
-import 'package:delivery_flutter_app/common/const/colors.dart';
 import 'package:delivery_flutter_app/common/extension/build_context_extension.dart';
 import 'package:delivery_flutter_app/common/layout/default_layout.dart';
 import 'package:delivery_flutter_app/common/utils/data_utils.dart';
@@ -45,13 +44,16 @@ class BasketScreen extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           '배달비',
-                          style: TextStyle(color: BODY_TEXT_COLOR),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.outline),
                         ),
                         Text(
                           '+ ${deliveryFee.toPriceString()}',
-                          style: const TextStyle(color: BODY_TEXT_COLOR),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
                         ),
                       ],
                     ),
@@ -106,6 +108,7 @@ class BasketScreen extends ConsumerWidget {
               },
               separatorBuilder: (context, index) => const Divider(
                     height: 32,
+                    thickness: 0,
                   ),
               itemCount: basket.length),
     );
@@ -125,7 +128,7 @@ class BasketScreen extends ConsumerWidget {
       context.goNamed(OrderDoneScreen.routeName);
       ref.read(basketProvider.notifier).clearBasket();
     } else {
-      context.showErrorSnackBar('결제 실패');
+      context.showSnackBar('결제 실패');
     }
   }
 }

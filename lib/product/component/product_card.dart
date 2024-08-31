@@ -114,28 +114,17 @@ class ProductCard extends ConsumerWidget {
           ),
         ),
         if (onSubtract != null && onAdd != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                borderRadius: BorderRadius.circular(8),
+          Column(
+            children: [
+              const SizedBox(height: 16),
+              _Footer(
+                total: (basket.firstWhere((e) => e.product.id == id).count *
+                    basket.firstWhere((e) => e.product.id == id).product.price),
+                count: basket.firstWhere((e) => e.product.id == id).count,
+                onSubtract: onSubtract!,
+                onAdd: onAdd!,
               ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-                child: _Footer(
-                  total: (basket.firstWhere((e) => e.product.id == id).count *
-                      basket
-                          .firstWhere((e) => e.product.id == id)
-                          .product
-                          .price),
-                  count: basket.firstWhere((e) => e.product.id == id).count,
-                  onSubtract: onSubtract!,
-                  onAdd: onAdd!,
-                ),
-              ),
-            ),
+            ],
           ),
       ],
     );
@@ -156,15 +145,21 @@ class _Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+    var backgroundColor = Theme.of(context).colorScheme.surfaceContainer;
+    var foregroundColor = Theme.of(context).colorScheme.onSurface;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Row(
         children: [
           Expanded(
             child: Text(
               '총금액: ${total.toPriceString()}',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSecondary,
+                color: foregroundColor,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -174,9 +169,10 @@ class _Footer extends StatelessWidget {
               buildButton(
                 context,
                 icon: count != 1 ? Icons.remove : Icons.delete_outlined,
-                color: count != 1
-                    ? Theme.of(context).colorScheme.onSecondary
-                    : Theme.of(context).colorScheme.errorContainer,
+                backgroundColor: count != 1
+                    ? foregroundColor
+                    : Theme.of(context).colorScheme.error,
+                foregroundColor: backgroundColor,
                 ontap: onSubtract,
               ),
               const SizedBox(
@@ -185,7 +181,7 @@ class _Footer extends StatelessWidget {
               Text(
                 count.toString(),
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSecondary,
+                  color: foregroundColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -194,7 +190,8 @@ class _Footer extends StatelessWidget {
               ),
               buildButton(
                 context,
-                color: Theme.of(context).colorScheme.onSecondary,
+                backgroundColor: foregroundColor,
+                foregroundColor: backgroundColor,
                 icon: Icons.add,
                 ontap: onAdd,
               ),
@@ -205,23 +202,23 @@ class _Footer extends StatelessWidget {
     );
   }
 
-  Widget buildButton(
-    context, {
-    required IconData icon,
-    required VoidCallback ontap,
-    required Color color,
-  }) {
+  Widget buildButton(context,
+      {required IconData icon,
+      required VoidCallback ontap,
+      required Color backgroundColor,
+      required Color foregroundColor,
+      required}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: color,
-        border: Border.all(color: color, width: 2),
+        color: backgroundColor,
+        border: Border.all(color: backgroundColor, width: 2),
       ),
       child: InkWell(
         onTap: ontap,
         child: Icon(
           icon,
-          color: Theme.of(context).colorScheme.secondary,
+          color: foregroundColor,
           size: 20,
         ),
       ),
