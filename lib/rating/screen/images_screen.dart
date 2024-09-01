@@ -36,28 +36,43 @@ class _ImagesScreenState extends State<ImagesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
-      title: '${currentIndex + 1}/${widget.images.length}',
+    return Scaffold(
       backgroundColor: Colors.black,
-      foregroundColor: Colors.white,
-      child: SafeArea(
-        child: PhotoViewGallery.builder(
-          itemCount: widget.images.length,
-          pageController: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              currentIndex = index;
-            });
-          },
-          builder: (context, index) {
-            return PhotoViewGalleryPageOptions(
-              imageProvider: widget.images[index].image,
-              minScale: PhotoViewComputedScale.contained,
-              maxScale: PhotoViewComputedScale.covered * 3,
-              filterQuality: FilterQuality.high,
-            );
-          },
-          scrollPhysics: const BouncingScrollPhysics(),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        title: Text(
+          '${currentIndex + 1}/${widget.images.length}',
+        ),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: PhotoViewGallery.builder(
+                itemCount: widget.images.length,
+                pageController: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                builder: (context, index) {
+                  return PhotoViewGalleryPageOptions(
+                    imageProvider: widget.images[index].image,
+                    minScale: PhotoViewComputedScale.contained,
+                    maxScale: PhotoViewComputedScale.covered * 3,
+                    filterQuality: FilterQuality.high,
+                  );
+                },
+                scrollPhysics: const BouncingScrollPhysics(),
+              ),
+            ),
+            AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.transparent,
+            ),
+          ],
         ),
       ),
     );
