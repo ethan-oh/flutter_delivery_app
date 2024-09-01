@@ -79,7 +79,7 @@ class _RestaurantDetailScreenState
       floatingActionButton: Material(
         borderRadius: BorderRadius.circular(300),
         elevation: 5,
-        shadowColor: Theme.of(context).colorScheme.onSurface,
+        shadowColor: Theme.of(context).colorScheme.primary,
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
