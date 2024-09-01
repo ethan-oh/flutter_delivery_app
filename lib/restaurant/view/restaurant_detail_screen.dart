@@ -76,15 +76,20 @@ class _RestaurantDetailScreenState
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: const Padding(
-          padding: EdgeInsets.fromLTRB(5, 8, 11, 8),
-          child: BasketIconButton(
-            isFloatingActionButton: true,
+      floatingActionButton: Material(
+        borderRadius: BorderRadius.circular(300),
+        elevation: 5,
+        shadowColor: Theme.of(context).colorScheme.onSurface,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(300),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(5, 8, 11, 8),
+            child: BasketIconButton(
+              isFloatingActionButton: true,
+            ),
           ),
         ),
       ),
@@ -121,7 +126,7 @@ class _RestaurantDetailScreenState
       stretch: true,
       floating: false,
       foregroundColor: Colors.white,
-      backgroundColor: Theme.of(context).colorScheme.onSecondaryFixedVariant,
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixedVariant,
       elevation: 0,
       expandedHeight: 200,
       flexibleSpace: FlexibleSpaceBar(
@@ -176,7 +181,7 @@ class _RestaurantDetailScreenState
 
   SliverPadding _buildRatings({required CursorPaginationBase ratingsState}) {
     return SliverPadding(
-      padding: const EdgeInsets.only(bottom: 16, left: 8, right: 8),
+      padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -195,7 +200,7 @@ class _RestaurantDetailScreenState
               );
             }
             return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.only(bottom: 16),
               child: RatingCard.fromModel(
                 model: ratingsState.data[index],
               ),

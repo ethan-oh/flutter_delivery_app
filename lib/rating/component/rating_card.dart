@@ -35,16 +35,15 @@ class RatingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      borderOnForeground: false,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(16),
       ),
-      elevation: 0,
-      // 카드 배경색
-      color: Theme.of(context).colorScheme.surfaceContainerHigh,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.symmetric(
+          vertical: 16,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -145,7 +144,7 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return content.toReadMoreText();
+    return content.toReadMoreText(context);
   }
 }
 

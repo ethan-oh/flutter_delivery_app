@@ -53,20 +53,20 @@ class RestaurantCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        // 이미지 렌더링 여부
         isDetail
             ? const SizedBox.shrink()
             : ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: image,
               ),
-        const SizedBox(
-          height: 16,
-        ),
+        const SizedBox(height: 16),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: isDetail ? 16 : 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // 레스토랑 이름
               Text(
                 name,
                 style: TextStyle(
@@ -74,9 +74,8 @@ class RestaurantCard extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                height: 8.0,
-              ),
+              const SizedBox(height: 8.0),
+              // 태그
               Text(
                 tags.join(' · '),
                 style: TextStyle(
@@ -85,6 +84,7 @@ class RestaurantCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8.0),
+              // 별점, 댓글, 배달시간, 배달비
               Row(
                 children: [
                   _IconText(
@@ -108,11 +108,10 @@ class RestaurantCard extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 16.0),
+              // 레스토랑 디테일 텍스트
               if (detail != null && isDetail)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: detail!.toReadMoreText(trimLines: 10),
-                ),
+                detail!.toReadMoreText(context, trimLines: 8),
             ],
           ),
         ),

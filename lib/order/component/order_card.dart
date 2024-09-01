@@ -52,83 +52,76 @@ class OrderCard extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: '${DataUtils.dateTimeToFormattedString(orderDate)} ',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: '${DataUtils.dateTimeToFormattedString(orderDate)} ',
+              ),
+              TextSpan(
+                text: '주문완료',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.w700,
                 ),
-                TextSpan(
-                  text: '주문완료',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
+              ),
+            ],
+          ),
+        ),
+        if (productCount > 1)
+          ExpansionTile(
+            initiallyExpanded: false,
+            tilePadding: const EdgeInsets.all(0),
+            shape: const Border(),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(16.0),
+              child: image,
+            ),
+            title: Text(
+              name,
+              style: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            subtitle: Text(
+              '$productsSummary ${price.toPriceString()}',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(productsDetail),
+            ],
+          )
+        else
+          ListTile(
+            contentPadding: const EdgeInsets.all(0),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(16.0),
+              child: image,
+            ),
+            title: Text(
+              name,
+              style: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            subtitle: Text(
+              '$productsSummary ${price.toPriceString()}',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w300,
+              ),
             ),
           ),
-          if (productCount > 1)
-            ExpansionTile(
-              initiallyExpanded: false,
-              tilePadding: const EdgeInsets.all(0),
-              shape: const Border(),
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
-                child: image,
-              ),
-              title: Text(
-                name,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              subtitle: Text(
-                '$productsSummary ${price.toPriceString()}',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-              expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(productsDetail),
-              ],
-            )
-          else
-            ListTile(
-              contentPadding: const EdgeInsets.all(0),
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
-                child: image,
-              ),
-              title: Text(
-                name,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              subtitle: Text(
-                '$productsSummary ${price.toPriceString()}',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-            ),
-        ],
-      ),
+      ],
     );
   }
 
