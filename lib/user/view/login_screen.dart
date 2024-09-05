@@ -10,6 +10,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final formKeyProvider =
     Provider<GlobalKey<FormState>>((ref) => GlobalKey<FormState>());
 
+final obsecurePasswordProvider = StateProvider<bool>(
+  (ref) => true,
+);
+
 class LoginScreen extends ConsumerWidget {
   static get routeName => 'login';
   const LoginScreen({super.key});
@@ -50,12 +54,25 @@ class LoginScreen extends ConsumerWidget {
                       },
                     ),
                     const SizedBox(height: 16.0),
-                    CustomTextFormField(
-                      hintText: '비밀번호를 입력해주세요.',
-                      validatior: ValidateUtils.passwordValidator,
-                      obscureText: true,
-                      onSaved: (value) {
-                        password = value;
+                    Consumer(
+                      builder: (_, ref, __) {
+                        bool isObsecure = ref.watch(obsecurePasswordProvider);
+                        return CustomTextFormField(
+                          hintText: '비밀번호를 입력해주세요.',
+                          validatior: ValidateUtils.passwordValidator,
+                          obscureText: isObsecure,
+                          suffixIcon: IconButton(
+                            onPressed: () => ref
+                                .read(obsecurePasswordProvider.notifier)
+                                .state = !isObsecure,
+                            icon: Icon(isObsecure
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                          ),
+                          onSaved: (value) {
+                            password = value;
+                          },
+                        );
                       },
                     ),
                     const SizedBox(height: 16.0),
@@ -108,7 +125,7 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text(
-      '환영합니다!',
+      'Ethan\'s Delivery',
       style: TextStyle(
         fontSize: 34,
         fontWeight: FontWeight.w500,
@@ -123,7 +140,7 @@ class _SubTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '이메일과 비밀번호를 입력해서 로그인해주세요!\n오늘도 성공적인 주문이 되길:)',
+      '이메일과 비밀번호를 입력해서 로그인해주세요!\n오늘도 성공적인 주문이 되길 :)',
       style: TextStyle(
         fontSize: 16,
         color: Theme.of(context).colorScheme.outline,

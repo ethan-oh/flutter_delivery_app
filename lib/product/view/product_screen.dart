@@ -14,6 +14,10 @@ class ProductScreen extends StatelessWidget {
     return PaginationListView<ProductModel>(
       provider: productProvider,
       emptyText: '음식 정보가 존재하지 않습니다.',
+      lastWidget: const Padding(
+        padding: EdgeInsets.only(bottom: 16),
+        child: Text('마지막 음식입니다'),
+      ),
       itemBuilder: (context, index, model) => GestureDetector(
         onTap: () => context.goNamed(
           RestaurantDetailScreen.routeName,

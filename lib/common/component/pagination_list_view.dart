@@ -96,10 +96,7 @@ class _PaginationListViewState<T extends IModelWithId>
               controller: controller,
               itemCount: state.data.length + 1,
               separatorBuilder: widget.separatorBuilder ??
-                  (context, index) => const Divider(
-                        height: 33,
-                        thickness: 0,
-                      ),
+                  (context, index) => const Divider(height: 33, thickness: 0),
               itemBuilder: (context, index) {
                 if (index == state.data.length) {
                   return Center(

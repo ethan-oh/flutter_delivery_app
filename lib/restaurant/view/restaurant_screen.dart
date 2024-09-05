@@ -16,9 +16,7 @@ class RestaurantScreen extends StatelessWidget {
       emptyText: '레스토랑 정보가 존재하지 않습니다.',
       lastWidget: const Padding(
         padding: EdgeInsets.only(bottom: 16),
-        child: Text(
-          '마지막입니다.',
-        ),
+        child: Text('마지막 식당입니다'),
       ),
       itemBuilder: (context, index, model) => InkWell(
         onTap: () {

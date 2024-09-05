@@ -187,15 +187,11 @@ class _RestaurantDetailScreenState
           (context, index) {
             if (index == ratingsState.data.length) {
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.only(bottom: 16),
                 child: Center(
                   child: ratingsState is CursorPaginationFetchingMore
                       ? const CircularProgressIndicator()
-                      : const Text(
-                          '마지막 댓글입니다',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 16),
-                        ),
+                      : const Text('마지막 댓글입니다'),
                 ),
               );
             }

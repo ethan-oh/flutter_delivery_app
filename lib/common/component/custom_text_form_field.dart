@@ -6,6 +6,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorText;
   final bool obscureText;
   final bool autofocus;
+  final Widget? suffixIcon;
   final FormFieldSetter? onSaved;
   final FormFieldValidator<String>? validatior;
 
@@ -14,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
     this.hintText,
     this.errorText,
     this.onSaved,
+    this.suffixIcon,
     this.obscureText = false,
     this.autofocus = false,
     this.validatior,
@@ -41,6 +43,7 @@ class CustomTextFormField extends StatelessWidget {
         filled: true,
         border: baseBorder,
         enabledBorder: baseBorder,
+        suffixIcon: suffixIcon,
       ),
     );
   }

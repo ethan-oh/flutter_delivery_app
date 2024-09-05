@@ -17,7 +17,7 @@ class BasketScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final basket = ref.watch(basketProvider);
-    int deliveryFee = 3000;
+    const int deliveryFee = 3000;
     int basketTotalCost = ref.read(basketProvider.notifier).totalPrice;
     return DefaultLayout(
       title: '장바구니',
@@ -90,27 +90,31 @@ class BasketScreen extends ConsumerWidget {
           ? const Center(
               child: Text('장바구니에 상품이 없습니다.'),
             )
-          : ListView.separated(
-              itemBuilder: (context, index) {
-                final BasketItemModel model = basket[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ProductCard.fromProductModel(
-                    model: model.product,
-                    onSubtract: () => ref
-                        .read(basketProvider.notifier)
-                        .removeFromBasket(id: model.product.id),
-                    onAdd: () => ref.read(basketProvider.notifier).addToBasket(
-                          product: model.product,
-                        ),
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => const Divider(
-                    height: 32,
-                    thickness: 0,
-                  ),
-              itemCount: basket.length),
+          : Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    final BasketItemModel model = basket[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ProductCard.fromProductModel(
+                        model: model.product,
+                        onSubtract: () => ref
+                            .read(basketProvider.notifier)
+                            .removeFromBasket(id: model.product.id),
+                        onAdd: () =>
+                            ref.read(basketProvider.notifier).addToBasket(
+                                  product: model.product,
+                                ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) => const Divider(
+                        height: 32,
+                        thickness: 0,
+                      ),
+                  itemCount: basket.length),
+            ),
     );
   }
 

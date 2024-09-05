@@ -71,8 +71,10 @@ class OrderCard extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(height: 5),
         if (productCount > 1)
           ExpansionTile(
+            minTileHeight: 0,
             initiallyExpanded: false,
             tilePadding: const EdgeInsets.all(0),
             shape: const Border(),
@@ -101,6 +103,8 @@ class OrderCard extends StatelessWidget {
           )
         else
           ListTile(
+            isThreeLine: false,
+            minTileHeight: 0,
             contentPadding: const EdgeInsets.all(0),
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(16.0),
