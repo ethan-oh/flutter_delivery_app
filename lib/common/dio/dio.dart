@@ -27,7 +27,8 @@ class CustomInterceptor extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    debugPrint('[요청] [${options.method}] ${options.uri}');
+    debugPrint(
+        '[요청] [${options.method}] ${options.uri.toString().replaceAll('http://127.0.0.1:3000', '')}');
 
     // header에 {'accessToken' : true}가 있다면
     // 즉, 토큰이 필요한 요청이라면
@@ -56,7 +57,7 @@ class CustomInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     debugPrint(
-        '[응답] [${response.requestOptions.method}] ${response.requestOptions.uri}');
+        '[응답] [${response.requestOptions.method}] ${response.requestOptions.uri.toString().replaceAll('http://127.0.0.1:3000', '')}');
     super.onResponse(response, handler);
   }
 
@@ -64,7 +65,7 @@ class CustomInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     debugPrint(
-        '[에러] ${err.response?.statusCode} [${err.requestOptions.method}] ${err.requestOptions.uri}');
+        '[에러] ${err.response?.statusCode} [${err.requestOptions.method}] ${err.requestOptions.uri.toString().replaceAll('http://127.0.0.1:3000', '')}');
 
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
 
@@ -85,6 +86,7 @@ class CustomInterceptor extends Interceptor {
           ),
         );
         final accessToken = resp.data['accessToken'];
+        debugPrint('토큰 갱신 성공');
         final options = err.requestOptions;
 
         // 토큰 변경
@@ -92,9 +94,13 @@ class CustomInterceptor extends Interceptor {
         // storage에 저장
         await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
         // 기존 요청 재전송
+        debugPrint(
+            '[재요청] [${options.method}] ${options.uri.toString().replaceAll('http://127.0.0.1:3000', '')}');
         final response = await dio.fetch(options);
         // 해결 되었음을 알려줌
-        debugPrint('토큰 갱신 및 재요청 성공');
+        // debugPrint('요청 재전송 성공');
+        debugPrint(
+            '[응답] [${response.requestOptions.method}] ${response.requestOptions.uri.toString().replaceAll('http://127.0.0.1:3000', '')}');
         return handler.resolve(response);
       } on DioException catch (e) {
         // userMeProvider와 dioProvider가 서로 참조하는
