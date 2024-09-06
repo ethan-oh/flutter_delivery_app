@@ -60,15 +60,6 @@ class ProfileScreen extends ConsumerWidget {
             ),
             FilledButton(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => ConfirmDialog(
-                    title: '알림',
-                    content: '정말 로그아웃하시겠습니까?',
-                    onConfirm: () => ref.read(userMeProvider.notifier).logout(),
-                  ),
-                );
-
                 context.showConfirmDialog(
                   title: '알림',
                   content: '정말 로그아웃하시겠습니까?',

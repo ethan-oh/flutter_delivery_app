@@ -8,6 +8,7 @@ extension BuildContextExtension on BuildContext {
     required VoidCallback onConfirm,
   }) {
     return showDialog(
+      barrierDismissible: false,
       context: this,
       builder: (context) => ConfirmDialog(
         title: title,

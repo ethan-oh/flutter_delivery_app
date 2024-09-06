@@ -20,13 +20,15 @@ class ConfirmDialog extends StatelessWidget {
       content: Text(content),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            context.pop();
+          },
           child: const Text('취소'),
         ),
         FilledButton(
           onPressed: () {
-            context.pop();
             onConfirm();
+            context.pop();
           },
           child: const Text('확인'),
         ),

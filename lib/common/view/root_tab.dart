@@ -40,7 +40,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      title: 'Ethan\'s 딜리버리',
+      title: 'Ethan\'s Delivery',
       actions: const [
         BasketIconButton(),
         SizedBox(width: 10),

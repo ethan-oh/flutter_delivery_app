@@ -20,8 +20,8 @@ class ValidateUtils {
       return '비밀번호를 입력해 주세요.';
     }
 
-    if (val.length < 4) {
-      return '비밀번호는 4자리 이상이어야 합니다.';
+    if (val.length < 8) {
+      return '비밀번호는 8자리 이상이어야 합니다.';
     }
 
     return null; // 유효성 검사 통과

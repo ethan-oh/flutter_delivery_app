@@ -25,6 +25,9 @@ class LoginScreen extends ConsumerWidget {
     String username = '';
     String password = '';
     return ScaffoldMessenger(
+      // MaterialApp의 ScaffoldMessenger에서 SnackBar를 생성하면
+      // 페이지가 이동되어도 SnackBar가 사라지지 않기 때문에 새로운 ScaffoldMessenger를
+      // 로그인 스크린에서만 사용함
       child: DefaultLayout(
         child: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
