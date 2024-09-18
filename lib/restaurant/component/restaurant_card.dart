@@ -108,7 +108,7 @@ class RestaurantCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 16.0),
+              if (detail != null && isDetail) const SizedBox(height: 16.0),
               // 레스토랑 디테일 텍스트
               if (detail != null && isDetail)
                 detail!.toReadMoreText(context, trimLines: 8),

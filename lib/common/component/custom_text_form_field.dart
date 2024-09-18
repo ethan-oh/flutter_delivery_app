@@ -6,9 +6,11 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorText;
   final bool obscureText;
   final bool autofocus;
+  final TextInputAction? textInputAction;
   final Widget? suffixIcon;
   final FormFieldSetter? onSaved;
   final FormFieldValidator<String>? validatior;
+  final ValueChanged<String>? onFieldSubmitted;
 
   const CustomTextFormField({
     super.key,
@@ -16,6 +18,8 @@ class CustomTextFormField extends StatelessWidget {
     this.errorText,
     this.onSaved,
     this.suffixIcon,
+    this.onFieldSubmitted,
+    this.textInputAction,
     this.obscureText = false,
     this.autofocus = false,
     this.validatior,
@@ -31,6 +35,8 @@ class CustomTextFormField extends StatelessWidget {
       obscureText: obscureText,
       autofocus: autofocus,
       onSaved: onSaved,
+      onFieldSubmitted: onFieldSubmitted,
+      textInputAction: textInputAction,
       validator: validatior,
       decoration: InputDecoration(
         fillColor: Theme.of(context).colorScheme.surfaceContainer,

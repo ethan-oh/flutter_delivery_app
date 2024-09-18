@@ -1,4 +1,3 @@
-import 'package:delivery_flutter_app/common/component/confirm_dialog.dart';
 import 'package:delivery_flutter_app/common/extension/build_context_extension.dart';
 import 'package:delivery_flutter_app/common/provider/theme_provider.dart';
 import 'package:delivery_flutter_app/user/model/user_model.dart';

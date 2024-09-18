@@ -67,7 +67,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             icon: Icon(
               Icons.receipt_long_outlined,
             ),
-            label: '주문',
+            label: '주문내역',
           ),
           NavigationDestination(
             icon: Icon(

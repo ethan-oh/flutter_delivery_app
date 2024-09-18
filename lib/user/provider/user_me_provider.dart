@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:delivery_flutter_app/common/const/data.dart';
 import 'package:delivery_flutter_app/common/storage/secure_storage.dart';
 import 'package:delivery_flutter_app/user/model/user_model.dart';
@@ -62,11 +63,16 @@ class UserMeProvider extends StateNotifier<UserModelBase?> {
       // watch로 관찰할 수 있게 상태 저장
       state = userResp;
       return userResp;
-    } on DioException catch (_) {
-      state = UserModelError(message: '로그인에 실패했습니다.');
+    } on DioException catch (e) {
+      String message;
+      if (e.error is SocketException) {
+        message = '로그인 중 오류가 발생했습니다.';
+      } else {
+        message = '아이디나 비밀번호가 틀렸습니다.';
+      }
+      state = UserModelError(message: message);
       return Future.value(state);
     }
-    // 로그인 후 바로 사용하려면 반환한 값을 사용
   }
 
   Future<void> logout() async {

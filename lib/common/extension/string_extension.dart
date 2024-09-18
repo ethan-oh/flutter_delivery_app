@@ -13,3 +13,9 @@ extension ReadMoreExtension on String {
         textAlign: TextAlign.start,
       );
 }
+
+extension ObjectLogExtension on Object {
+  void print() {
+    debugPrint(toString());
+  }
+}

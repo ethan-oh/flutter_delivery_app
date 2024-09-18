@@ -1,6 +1,8 @@
 import 'package:delivery_flutter_app/common/utils/data_utils.dart';
 import 'package:delivery_flutter_app/order/model/order_model.dart';
+import 'package:delivery_flutter_app/restaurant/view/restaurant_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class OrderCard extends StatelessWidget {
   final DateTime orderDate;
@@ -10,6 +12,7 @@ class OrderCard extends StatelessWidget {
   final String productsDetail;
   final int price;
   final int productCount;
+  final String rid;
 
   const OrderCard({
     required this.orderDate,
@@ -19,6 +22,7 @@ class OrderCard extends StatelessWidget {
     required this.productsDetail,
     required this.price,
     required this.productCount,
+    required this.rid,
     super.key,
   });
 
@@ -48,10 +52,49 @@ class OrderCard extends StatelessWidget {
       productsSummary: productsSummary,
       price: model.totalPrice,
       productsDetail: productsDetail,
+      rid: model.restaurant.id,
     );
   }
+
   @override
   Widget build(BuildContext context) {
+    final commonTitle = InkWell(
+      onTap: () {
+        context.pushNamed(
+          RestaurantDetailScreen.routeName,
+          pathParameters: {'rid': rid},
+        );
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(width: 3),
+          const Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 13,
+          ),
+        ],
+      ),
+    );
+
+    final commonSubtitle = Text(
+      '$productsSummary ${price.toPriceString()}',
+      style: TextStyle(
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
+        fontWeight: FontWeight.w300,
+      ),
+    );
+
+    final commonLeading =
+        ClipRRect(borderRadius: BorderRadius.circular(16.0), child: image);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -78,24 +121,9 @@ class OrderCard extends StatelessWidget {
             initiallyExpanded: false,
             tilePadding: const EdgeInsets.all(0),
             shape: const Border(),
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
-              child: image,
-            ),
-            title: Text(
-              name,
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            subtitle: Text(
-              '$productsSummary ${price.toPriceString()}',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
+            title: commonTitle,
+            subtitle: commonSubtitle,
+            leading: commonLeading,
             expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(productsDetail),
@@ -103,27 +131,11 @@ class OrderCard extends StatelessWidget {
           )
         else
           ListTile(
-            isThreeLine: false,
             minTileHeight: 0,
             contentPadding: const EdgeInsets.all(0),
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
-              child: image,
-            ),
-            title: Text(
-              name,
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            subtitle: Text(
-              '$productsSummary ${price.toPriceString()}',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
+            title: commonTitle,
+            subtitle: commonSubtitle,
+            leading: commonLeading,
           ),
       ],
     );
